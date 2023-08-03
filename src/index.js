@@ -4,17 +4,17 @@ import "./scss/styles.scss";
 import App from "./components/app/app";
 import reportWebVitals from "./reportWebVitals";
 
-// ReactDOM.render(
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>,
-//   document.getElementById("root")
-// );
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById("root")
+);
 
-const title = 'React с Webpack и Babel';
+// const title = 'React с Webpack и Babel';
 
-const root = ReactDOM.createRoot(document.getElementById('app'));
-root.render(<h1>{title}</h1>); 
+// const root = ReactDOM.createRoot(document.getElementById('app'));
+// root.render(<h1>{title}</h1>); 
 
 
 
