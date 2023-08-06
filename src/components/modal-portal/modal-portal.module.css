@@ -10,14 +10,13 @@
   align-items: center;
   justify-content: center;
   transition: opacity 0.3s ease-in-out;
-  opacity: 0;
 }
 
-.wrapper {
+/* .wrapper {
   width: 720px;
   background: #1C1C21;
 }
 
 .active {
   opacity: 1;
-}
+} */

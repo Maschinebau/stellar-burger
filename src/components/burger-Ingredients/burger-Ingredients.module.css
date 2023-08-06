@@ -1,4 +1,6 @@
-.ingridientsContainer {
+.ingredientsContainer {
+  display: flex;
+  flex-direction: column;
   overflow-y: scroll;
   transition: all 1s;
   max-height: 560px;
@@ -7,4 +9,5 @@
 
 .section {
   max-width: 600px;
+  gap: 40px 0;
 }

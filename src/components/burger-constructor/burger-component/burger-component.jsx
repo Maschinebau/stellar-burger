@@ -1,4 +1,5 @@
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
+import PropTypes from "prop-types"
 
 export function BurgerComponent(props) {
   const {isLocked, img, price, text, type, styles} = props
@@ -9,4 +10,12 @@ export function BurgerComponent(props) {
       <ConstructorElement thumbnail={img} text={text} price={price} isLocked={isLocked} type={type}/>
     </div>
   )
+}
+
+BurgerComponent.propTypes = {
+  count: PropTypes.number,
+  img: PropTypes.string,
+  price: PropTypes.number,
+  text: PropTypes.string,
+  type: PropTypes.string
 }

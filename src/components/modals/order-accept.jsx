@@ -1,7 +1,7 @@
 import styles from './modals.module.css'
-import { CheckMarkIcon, CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
-export function OrderAccept({ onClose }) {
+export function OrderAccept({onClose}) {
 
   return (
     <div className={styles.wrapper}>
