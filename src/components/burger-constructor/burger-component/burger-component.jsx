@@ -1,11 +1,12 @@
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from "prop-types"
+import styles from './burger-component.module.css'
 
 export function BurgerComponent(props) {
-  const {isLocked, img, price, text, type, styles} = props
+  const {isLocked, img, price, text, type, classes} = props
   
   return (
-    <div className={styles} style={{display: 'flex', columnGap: '8px', alignItems: 'center', justifyContent: 'flex-end'}}>
+    <div className={`${classes} ${styles.element}`}>
       {isLocked ? null : <DragIcon />} 
       <ConstructorElement thumbnail={img} text={text} price={price} isLocked={isLocked} type={type}/>
     </div>

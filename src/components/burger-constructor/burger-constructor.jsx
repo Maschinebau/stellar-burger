@@ -2,8 +2,8 @@ import React, { useEffect, useState, memo } from "react"
 import styles from './burger-constructor.module.css'
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { BurgerComponent } from './burger-component/burger-component'
-import { ModalPortal } from '../modal-portal/modal-portal'
-import { OrderAccept } from '../modals/order-accept'
+import { Modal } from '../modal/modal'
+import { OrderDetails } from '../popups/OrderDetails'
 import { apiUrl } from '../../utils/constants'
 
 export function BurgerConstructor() {
@@ -18,6 +18,9 @@ export function BurgerConstructor() {
   const fetchIngredients = async () => {
     try {
       const response = await fetch(apiUrl)
+      if (!response.ok) {
+        throw new Error('Server response was not ok')
+      }
       const array = await response.json()
       setIngredients(array.data)
     } catch (error) {
@@ -31,16 +34,16 @@ export function BurgerConstructor() {
     <section className={`${styles.constructor} custom-scroll`}>
 
       <BurgerComponent
-        styles='mr-4 mb-4'
+        classes='mr-4 mb-4'
         isLocked={true}
         text='Краторная булка N-200i (верх)'
         type='top'
-        img = 'https://code.s3.yandex.net/react/code/bun-01.png'
+        img='https://code.s3.yandex.net/react/code/bun-01.png'
       />
 
       <ul className={`${styles.elements} custom-scroll`}>
         {mains.map((item) =>
-          <li >
+          <li key={item._id}>
             <BurgerComponent
               text={item.name}
               img={item.image}
@@ -51,23 +54,23 @@ export function BurgerConstructor() {
       </ul>
 
       <BurgerComponent
-        styles='mr-4 mt-4'
+        classes='mr-4 mt-4'
         isLocked={true} text='Краторная булка N-200i (низ)'
         type='bottom'
-        img = 'https://code.s3.yandex.net/react/code/bun-01.png'
+        img='https://code.s3.yandex.net/react/code/bun-01.png'
       />
 
       <div className={styles.purchase}>
-        <div style={{ display: 'flex', columnGap: '8px', alignItems: 'center', paddingRight: '40px' }}>
+        <div className={styles.summary}>
           <p className='text text_type_digits-medium'>610</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="button" type="primary" size="medium" style={{ cursor: 'pointer' }} onClick={() => setModalOpen(true)}>Оформить заказ</Button>
+        <Button htmlType="button" type="primary" size="medium" extraClass={styles.button} onClick={() => setModalOpen(true)}>Оформить заказ</Button>
       </div>
       {modalOpened &&
-        <ModalPortal onOverlay={() => setModalOpen(false)}>
-          <OrderAccept onClose={() => setModalOpen(false)}/>
-        </ModalPortal>}
+        <Modal onClose={() => setModalOpen(false)}>
+          <OrderDetails />
+        </Modal>}
     </section>
   )
 }

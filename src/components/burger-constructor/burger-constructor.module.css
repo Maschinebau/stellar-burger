@@ -24,18 +24,16 @@
   height: 656px;
   list-style: none;
   overflow-y: scroll;
+  padding-right: 4px;
 }
 
-/* .elements li:first-child {
-  position: sticky;
-  top: 0;
+.summary {
+  display: flex;
+  column-gap: 8px;
+  align-items: center;
+  padding-right: 40px;
 }
 
-.elements li:last-child {
-  position: sticky;
-  bottom: 0;
+.button {
+  cursor: pointer;
 }
-
-.scrollbar::-webkit-scrollbar {
-  display: none;
-} */

@@ -11,3 +11,7 @@
   max-width: 600px;
   gap: 40px 0;
 }
+
+.tabs {
+  display: flex;
+}

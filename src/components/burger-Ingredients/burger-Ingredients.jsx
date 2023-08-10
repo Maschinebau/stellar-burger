@@ -1,12 +1,13 @@
 import { useState, useEffect, memo } from 'react'
 import styles from './burger-Ingredients.module.css'
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components"
-import { IngridientGroup } from './ingridient-group/ingridient-group'
+import { IngredientGroup } from './ingredient-group/ingredient-group'
 import { apiUrl } from '../../utils/constants'
 
 export function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState('bun')
   const [ingredients, setIngredients] = useState([])
+  const [selectedIngredient, setIngredient] = useState(null);
   const buns = ingredients.filter((item) => item.type === 'bun')
   const sauces = ingredients.filter((item) => item.type === 'sauce')
   const mains = ingredients.filter((item) => item.type === 'main')
@@ -18,6 +19,9 @@ export function BurgerIngredients() {
   const fetchIngredients = async () => {
     try {
       const response = await fetch(apiUrl)
+      if (!response.ok) {
+        throw new Error('Server response was not ok')
+      }
       const array = await response.json()
       setIngredients(array.data)
     } catch (error) {
@@ -33,7 +37,7 @@ export function BurgerIngredients() {
   return (
     <section className={styles.section}>
       <h1 className="text text_type_main-large pt-10 pb-5">Соберите бургер</h1>
-      <div style={{ display: 'flex' }}>
+      <div className={styles.tabs}>
         <Tab value="bun" active={currentTab === 'bun'} onClick={handleTabClick}>
           Булки
         </Tab>
@@ -45,9 +49,9 @@ export function BurgerIngredients() {
         </Tab>
       </div>
       <div className={`${styles.ingredientsContainer} custom-scroll mt-10`}>
-        <IngridientGroup id='bun' title='Булка' listItems={buns} />
-        <IngridientGroup id='sauce' title='Соусы' listItems={sauces} />
-        <IngridientGroup id='main' title='Начинки' listItems={mains} />
+        <IngredientGroup id='bun' title='Булка' listItems={buns} />
+        <IngredientGroup id='sauce' title='Соусы' listItems={sauces} />
+        <IngredientGroup id='main' title='Начинки' listItems={mains} />
       </div>
     </section>
   )

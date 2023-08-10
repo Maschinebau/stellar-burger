@@ -8,12 +8,14 @@
   text-wrap: wrap;
   text-align: center;
   cursor: pointer;
+  visibility: visible;
 }
 
 .hidden {
   visibility: hidden;
 }
 
-.visible {
-  visibility: visible;
+.currency {
+  display: flex;
+  gap: 8px;
 }
