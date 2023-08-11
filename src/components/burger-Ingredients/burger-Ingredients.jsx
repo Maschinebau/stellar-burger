@@ -4,30 +4,11 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components"
 import { IngredientGroup } from './ingredient-group/ingredient-group'
 import { apiUrl } from '../../utils/constants'
 
-export function BurgerIngredients() {
+export function BurgerIngredients({ingredients}) {
   const [currentTab, setCurrentTab] = useState('bun')
-  const [ingredients, setIngredients] = useState([])
-  const [selectedIngredient, setIngredient] = useState(null);
   const buns = ingredients.filter((item) => item.type === 'bun')
   const sauces = ingredients.filter((item) => item.type === 'sauce')
   const mains = ingredients.filter((item) => item.type === 'main')
-
-  useEffect(() => {
-    fetchIngredients()
-  }, [])
-
-  const fetchIngredients = async () => {
-    try {
-      const response = await fetch(apiUrl)
-      if (!response.ok) {
-        throw new Error('Server response was not ok')
-      }
-      const array = await response.json()
-      setIngredients(array.data)
-    } catch (error) {
-      console.error('Ошибка при получении ингредиентов:', error)
-    }
-  }
 
   const handleTabClick = (value) => {
     setCurrentTab(value)

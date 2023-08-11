@@ -28,14 +28,10 @@ export function IngredientItem({ ingredient }) {
 }
 
 IngredientItem.propTypes = {
-  imageLink: PropTypes.string,
-  price: PropTypes.number,
-  name: PropTypes.string,
-  count: PropTypes.number,
-  key: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  calories: PropTypes.number,
-  proteins: PropTypes.number,
-  fat: PropTypes.number,
-  carbohydrates: PropTypes.number,
-  imageLarge: PropTypes.string
-}
+  ingredient: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+};

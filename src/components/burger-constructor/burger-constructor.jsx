@@ -6,29 +6,10 @@ import { Modal } from '../modal/modal'
 import { OrderDetails } from '../popups/OrderDetails'
 import { apiUrl } from '../../utils/constants'
 
-export function BurgerConstructor() {
+export function BurgerConstructor({ingredients}) {
   const [modalOpened, setModalOpen] = useState(false)
-  const [ingredients, setIngredients] = useState([])
   const mains = ingredients.filter((item) => item.type !== 'bun')
   const buns = ingredients.filter((item) => item.type === 'bun')
-  useEffect(() => {
-    fetchIngredients()
-  }, [])
-
-  const fetchIngredients = async () => {
-    try {
-      const response = await fetch(apiUrl)
-      if (!response.ok) {
-        throw new Error('Server response was not ok')
-      }
-      const array = await response.json()
-      setIngredients(array.data)
-    } catch (error) {
-      console.error('Ошибка при получении ингредиентов:', error)
-    }
-  }
-
-
 
   return (
     <section className={`${styles.constructor} custom-scroll`}>
