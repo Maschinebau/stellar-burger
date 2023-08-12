@@ -29,5 +29,5 @@ export function IngredientItem({ ingredient }) {
 }
 
 IngredientItem.propTypes = {
-  ingredient: PropTypes.arrayOf(ingredientPropType).isRequired,
+  ingredient: ingredientPropType.isRequired
 }
