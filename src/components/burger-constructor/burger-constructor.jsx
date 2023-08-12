@@ -5,9 +5,11 @@ import { BurgerComponent } from './burger-component/burger-component'
 import { Modal } from '../modal/modal'
 import { OrderDetails } from '../popups/OrderDetails'
 import { apiUrl } from '../../utils/constants'
+import { ingredientPropType } from "../../utils/prop-types"
+import PropTypes from "prop-types"
 
 
-export function BurgerConstructor({ingredients}) {
+export function BurgerConstructor({ ingredients }) {
   const [modalOpened, setModalOpen] = useState(false)
   const mains = ingredients.filter((item) => item.type !== 'bun')
   const buns = ingredients.filter((item) => item.type === 'bun')
@@ -60,5 +62,5 @@ export function BurgerConstructor({ingredients}) {
 export default memo(BurgerConstructor)
 
 BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(ingridientPropType).isRequired,
+  ingredients: PropTypes.arrayOf(ingredientPropType).isRequired,
 }

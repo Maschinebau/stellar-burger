@@ -1,5 +1,6 @@
 import { IngredientItem } from '../ingredient-item/ingredient-item'
 import styles from './ingredient-group.module.css'
+import { ingredientPropType } from "../../../utils/prop-types"
 import PropTypes from "prop-types"
 
 
@@ -22,6 +23,6 @@ export function IngredientGroup(props) {
 
 IngredientGroup.propTypes = {
   title: PropTypes.string,
-  listItems: PropTypes.arrayOf(ingridientPropType).isRequired,
+  listItems: PropTypes.arrayOf(ingredientPropType).isRequired,
   id: PropTypes.string,
 }

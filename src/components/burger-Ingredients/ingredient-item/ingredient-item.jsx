@@ -3,6 +3,7 @@ import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-c
 import { Modal } from '../../modal/modal'
 import { IngredientDetails } from '../../popups/IngredientDetails'
 import styles from './ingredient-item.module.css'
+import { ingredientPropType } from "../../../utils/prop-types"
 import PropTypes from "prop-types"
 
 
@@ -27,7 +28,6 @@ export function IngredientItem({ ingredient }) {
   )
 }
 
-IngridientItem.propTypes = {
-    ingredient: PropTypes.arrayOf(ingridientPropType).isRequired,
-    count: PropTypes.number,
+IngredientItem.propTypes = {
+  ingredient: PropTypes.arrayOf(ingredientPropType).isRequired,
 }

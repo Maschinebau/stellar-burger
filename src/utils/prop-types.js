@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 
-export const ingridientPropType = PropTypes.shape({
+export const ingredientPropType = PropTypes.shape({
     _id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     name: PropTypes.string,
     type: PropTypes.string,

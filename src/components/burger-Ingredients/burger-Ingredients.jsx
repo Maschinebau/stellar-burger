@@ -3,10 +3,12 @@ import styles from './burger-Ingredients.module.css'
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components"
 import { IngredientGroup } from './ingredient-group/ingredient-group'
 import { apiUrl } from '../../utils/constants'
-import PropTypes from "prop-types";
+import { ingredientPropType } from "../../utils/prop-types"
+import PropTypes from "prop-types"
 
 
-export function BurgerIngredients({ingredients}) {
+
+export function BurgerIngredients({ ingredients }) {
 
   const [currentTab, setCurrentTab] = useState('bun')
   const buns = ingredients.filter((item) => item.type === 'bun')
@@ -44,5 +46,5 @@ export function BurgerIngredients({ingredients}) {
 export default memo(BurgerIngredients)
 
 BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(ingridientPropType).isRequired,
+  ingredients: PropTypes.arrayOf(ingredientPropType).isRequired,
 }
