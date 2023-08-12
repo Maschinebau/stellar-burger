@@ -6,6 +6,7 @@ import { Modal } from '../modal/modal'
 import { OrderDetails } from '../popups/OrderDetails'
 import { apiUrl } from '../../utils/constants'
 
+
 export function BurgerConstructor({ingredients}) {
   const [modalOpened, setModalOpen] = useState(false)
   const mains = ingredients.filter((item) => item.type !== 'bun')
@@ -57,3 +58,7 @@ export function BurgerConstructor({ingredients}) {
 }
 
 export default memo(BurgerConstructor)
+
+BurgerConstructor.propTypes = {
+  ingredients: PropTypes.arrayOf(ingridientPropType).isRequired,
+}

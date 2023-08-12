@@ -27,11 +27,7 @@ export function IngredientItem({ ingredient }) {
   )
 }
 
-IngredientItem.propTypes = {
-  ingredient: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-  }).isRequired,
-};
+IngridientItem.propTypes = {
+    ingredient: PropTypes.arrayOf(ingridientPropType).isRequired,
+    count: PropTypes.number,
+}

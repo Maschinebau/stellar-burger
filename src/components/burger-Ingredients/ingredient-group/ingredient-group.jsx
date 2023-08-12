@@ -21,14 +21,7 @@ export function IngredientGroup(props) {
 }
 
 IngredientGroup.propTypes = {
-  imageLink: PropTypes.string,
-  price: PropTypes.number,
-  name: PropTypes.string,
-  count: PropTypes.number,
-  key: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  calories: PropTypes.number,
-  proteins: PropTypes.number,
-  fat: PropTypes.number,
-  carbohydrates: PropTypes.number,
-  imageLarge: PropTypes.string
+  title: PropTypes.string,
+  listItems: PropTypes.arrayOf(ingridientPropType).isRequired,
+  id: PropTypes.string,
 }
