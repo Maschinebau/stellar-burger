@@ -1,0 +1,21 @@
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 272px;
+  height: 208px;
+  text-wrap: wrap;
+  text-align: center;
+  cursor: pointer;
+  visibility: visible;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.currency {
+  display: flex;
+  gap: 8px;
+}

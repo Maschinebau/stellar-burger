@@ -1,7 +1,16 @@
+@import-normalize;
+
 .app {
   display: flex;
   flex-direction: column;
-  height: 100vh;
   background-color: #131316;
   color: #f2f2f3;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  column-gap: 40px;
 }

@@ -1,0 +1,17 @@
+.ingredientsContainer {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  transition: all 1s;
+  max-height: 560px;
+  row-gap: 40px;
+}
+
+.section {
+  max-width: 600px;
+  gap: 40px 0;
+}
+
+.tabs {
+  display: flex;
+}

@@ -1,0 +1,16 @@
+.item {
+  display: flex;
+  column-gap: 8px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.item:hover {
+  color: #f2f2f3;
+  transition: .3s ease-in;
+}
+
+.text {
+  padding: 0px;
+  margin: 0px;
+}
