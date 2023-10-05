@@ -2,7 +2,6 @@ import { useState, useEffect, memo } from 'react'
 import styles from './burger-Ingredients.module.css'
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components"
 import { IngredientGroup } from './ingredient-group/ingredient-group'
-import { apiUrl } from '../../utils/constants'
 import { ingredientPropType } from "../../utils/prop-types"
 import PropTypes from "prop-types"
 

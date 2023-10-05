@@ -1,31 +1,28 @@
 import { useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import {ModalOverlay} from './modal-overlay/modal-overlay'
+import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components"
+import { ModalOverlay } from "./modal-overlay/modal-overlay"
 import PropTypes from "prop-types"
-import styles from './modal.module.css'
+import styles from "./modal.module.css"
 
 export function Modal({ children, onClose }) {
-
   useEffect(() => {
-    const handleKeyPress = (event) => {
-      if (event.key === 'Escape') {
+    const handleKeyPress = (evt) => {
+      if (evt.key === "Escape") {
         onClose()
       }
     }
-    document.addEventListener('keydown', handleKeyPress)
+    document.addEventListener("keydown", handleKeyPress)
     return () => {
-      document.removeEventListener('keydown', handleKeyPress)
+      document.removeEventListener("keydown", handleKeyPress)
     }
   }, [])
 
-  const handleClick = (event) => {
-    if (
-      event.target.classList.contains(`${styles.overlay}`)
-    ) {
-      onClose();
+  const handleClick = (evt) => {
+    if (evt.target.classList.contains(`${styles.overlay}`)) {
+      onClose()
     }
-  };
+  }
 
   return createPortal(
     <ModalOverlay className={styles.overlay} click={handleClick}>
@@ -36,11 +33,11 @@ export function Modal({ children, onClose }) {
         </button>
       </div>
     </ModalOverlay>,
-    document.getElementById('modals')
+    document.getElementById("modals")
   )
 }
 
 Modal.propTypes = {
   children: PropTypes.node,
-  onClose: PropTypes.func,
+  onClose: PropTypes.func
 }

@@ -4,6 +4,7 @@ import { BurgerConstructor } from '../burger-constructor/burger-constructor'
 import { BurgerIngredients } from '../burger-Ingredients/burger-Ingredients'
 import { useEffect, useState } from "react"
 import { apiUrl } from '../../utils/constants'
+import { ConstructorContext } from '../../services/ConstructorContext.js'
 
 function App() {
 
@@ -29,10 +30,12 @@ function App() {
   return (
     <div className={styles.app}>
       <AppHeader />
-      <main className={styles.main}>
-        <BurgerIngredients ingredients={ingredients} />
-        <BurgerConstructor ingredients={ingredients}/>
-      </main>
+      <ConstructorContext.Provider value={{}}>
+        <main className={styles.main}>
+          <BurgerIngredients ingredients={ingredients} />
+          <BurgerConstructor ingredients={ingredients} />
+        </main>
+      </ConstructorContext.Provider>
     </div>
   );
 }

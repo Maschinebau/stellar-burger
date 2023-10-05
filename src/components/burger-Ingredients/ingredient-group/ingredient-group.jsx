@@ -25,4 +25,4 @@ IngredientGroup.propTypes = {
   title: PropTypes.string,
   listItems: PropTypes.arrayOf(ingredientPropType).isRequired,
   id: PropTypes.string,
-}
+} 
