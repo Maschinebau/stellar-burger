@@ -7,10 +7,9 @@ import {
 import { BurgerComponent } from "./burger-component/burger-component"
 import { Modal } from "../modal/modal"
 import { OrderDetails } from "../popups/OrderDetails"
-import { apiUrl } from "../../utils/constants"
 import { ingredientPropType } from "../../utils/prop-types"
 import PropTypes from "prop-types"
-import { ConstructorContext } from "../../services/ConstructorContext.js"
+
 
 export function BurgerConstructor({ ingredients }) {
   const [modalOpened, setModalOpen] = useState(false)
