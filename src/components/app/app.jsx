@@ -2,38 +2,67 @@ import styles from "./app.module.css"
 import { AppHeader } from "../app-header/app-header"
 import { BurgerConstructor } from "../burger-constructor/burger-constructor"
 import { BurgerIngredients } from "../burger-Ingredients/burger-Ingredients"
-import { useEffect, useState } from "react"
-import { apiUrl } from "../../utils/constants"
-
+import { ingredients_URL } from "../../utils/constants"
+import { useEffect, useCallback } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { fetchIngredients } from "../../store/slices/ingredientsSlice"
+import { DragDropContext } from "react-beautiful-dnd"
+import {
+  addToConstructor,
+  removeFromConstructor,
+  updateConstructor
+} from "../../store/slices/constructorSlice"
 
 function App() {
-  const [ingredients, setIngredients] = useState([])
+  const ingredients = useSelector((state) => state.ingredients.ingredients)
+  const orderedIngredients = useSelector((state) => state.burgerConstructor.mains)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    fetchIngredients()
-  }, [])
+    dispatch(fetchIngredients(ingredients_URL))
+  }, [dispatch])
 
-  const fetchIngredients = async () => {
-    try {
-      const response = await fetch(apiUrl)
-      if (!response.ok) {
-        throw new Error("Server response was not ok")
+  const handleDragEnd = useCallback(
+    ({ draggableId, source, destination }) => {
+      if (!destination) return
+      const draggableIngredient = ingredients.find((item) => item.dragId === draggableId)
+      const draggableOrderIngredient = orderedIngredients.find((item) => item.dragId === draggableId)
+
+      const reorder = (list, sourceIndex, endIndex) => {
+        const result = Array.from(list)
+        const [removed] = result.splice(sourceIndex, 1)
+        result.splice(endIndex, 0, removed)
+        return result
       }
-      const array = await response.json()
-      setIngredients(array.data)
-    } catch (error) {
-      console.error("Ошибка при получении ингредиентов:", error)
-    }
-  }
+      const reorderedOrderList = reorder(orderedIngredients, source.index, destination.index)
+
+      if (
+        (source.droppableId === "bun" || source.droppableId === "sauce" || source.droppableId === "main") &&
+        (destination.droppableId === "constructor" || destination.droppableId === "constructorList")
+      ) {
+        dispatch(addToConstructor({ ...draggableIngredient, index: destination.index }))
+      } else if (source.droppableId === "constructorList" && destination.droppableId !== "constructorList") {
+        dispatch(removeFromConstructor(draggableOrderIngredient.dragId))
+      } else if (
+        source.droppableId === "constructorList" &&
+        destination.droppableId === "constructorList"
+      ) {
+        dispatch(updateConstructor(reorderedOrderList))
+      }
+    },
+    [dispatch, ingredients, orderedIngredients]
+  )
 
   return (
-    <div className={styles.app}>
-      <AppHeader />
-      <main className={styles.main}>
-        <BurgerIngredients ingredients={ingredients} />
-        <BurgerConstructor ingredients={ingredients} />
-      </main>
-    </div>
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <div className={styles.app}>
+        <AppHeader />
+        <main className={styles.main}>
+          <BurgerIngredients />
+          <BurgerConstructor />
+        </main>
+      </div>
+    </DragDropContext>
   )
 }
 

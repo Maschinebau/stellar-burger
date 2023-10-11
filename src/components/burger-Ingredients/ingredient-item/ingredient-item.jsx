@@ -1,26 +1,33 @@
-import { useState, useEffect } from "react"
-import {
-  CurrencyIcon,
-  Counter
-} from "@ya.praktikum/react-developer-burger-ui-components"
+import { useState, useMemo, memo } from "react"
+import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components"
 import { Modal } from "../../modal/modal"
 import { IngredientDetails } from "../../popups/IngredientDetails"
 import styles from "./ingredient-item.module.css"
 import { ingredientPropType } from "../../../utils/prop-types"
 import PropTypes from "prop-types"
+import { useSelector, useDispatch } from "react-redux"
+import { setCurrentIngredient } from "../../../store/slices/currentIngredientSlice"
 
 export function IngredientItem({ ingredient }) {
   const [isClicked, setIsClicked] = useState(false)
-  const [count, setCount] = useState(0)
+  const orderedMains = useSelector((state) => state.burgerConstructor.mains)
+  const orderedBuns = useSelector((state) => state.burgerConstructor.buns)
+  const dispatch = useDispatch()
+
+  const onClick = () => {
+    setIsClicked(true)
+    dispatch(setCurrentIngredient(ingredient))
+  }
+
+  const count = useMemo(() => {
+    const orderedItems = [...orderedMains, ...orderedBuns]
+    return orderedItems.filter((item) => item.name === ingredient.name).length
+  }, [orderedMains, orderedBuns, ingredient.name])
 
   return (
     <>
-      <div
-        className={styles.item}
-        onClick={() => setIsClicked(true)}
-        id={ingredient._id}
-      >
-        <img className="pb-2" src={ingredient.image} alt={ingredient.name} />
+      <div className={styles.item} onClick={onClick} id={ingredient._id}>
+        <img className="pb-2" src={ingredient.image} alt={ingredient.name} loading="lazy" />
         <p className={`${styles.currency} text text_type_digits-default pb-2`}>
           {ingredient.price} <CurrencyIcon />
         </p>
@@ -43,3 +50,5 @@ export function IngredientItem({ ingredient }) {
 IngredientItem.propTypes = {
   ingredient: ingredientPropType.isRequired
 }
+
+export default memo(IngredientItem)

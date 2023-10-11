@@ -1,9 +1,9 @@
 .ingredientsContainer {
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
+  overflow-y: auto;
   transition: all 1s;
-  max-height: 560px;
+  max-height: calc(100vh - 300px);
   row-gap: 40px;
 }
 

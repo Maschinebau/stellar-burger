@@ -1,77 +1,153 @@
-import React, { useEffect, useState, memo, useContext } from "react"
+import React, { useEffect, useState, memo, useCallback, useMemo } from "react"
 import styles from "./burger-constructor.module.css"
-import {
-  Button,
-  CurrencyIcon
-} from "@ya.praktikum/react-developer-burger-ui-components"
+import { Button, CurrencyIcon, ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components"
 import { BurgerComponent } from "./burger-component/burger-component"
 import { Modal } from "../modal/modal"
 import { OrderDetails } from "../popups/OrderDetails"
 import { ingredientPropType } from "../../utils/prop-types"
-import PropTypes from "prop-types"
+// import PropTypes from "prop-types"
+import { useSelector, useDispatch } from "react-redux"
+import { Droppable, Draggable } from "react-beautiful-dnd"
+import { removeFromConstructor } from "../../store/slices/constructorSlice"
+import { postOrder } from "../../store/slices/orderSlice"
 
-
-export function BurgerConstructor({ ingredients }) {
+export function BurgerConstructor() {
   const [modalOpened, setModalOpen] = useState(false)
-  const mains = ingredients.filter((item) => item.type !== "bun")
-  const buns = ingredients.filter((item) => item.type === "bun")
+  const orderedMains = useSelector((state) => state.burgerConstructor.mains)
+  const orderedBuns = useSelector((state) => state.burgerConstructor.buns)
+  const orderedBun = orderedBuns.find((item) => item.type === "bun")
+  const allOrderedIngredients = useMemo(() => [...orderedBuns, ...orderedMains], [orderedBuns, orderedMains])
+  const dispatch = useDispatch()
+  const ids = allOrderedIngredients.map((ingredient) => ingredient._id)
+
+  const totalPrice = useMemo(() => {
+    return allOrderedIngredients.reduce((sum, item) => sum + item.price, 0)
+  }, [allOrderedIngredients])
+
+  const removeIngredient = (ingredientId) => {
+    dispatch(removeFromConstructor(ingredientId))
+  }
+
+  const handleOrderCreate = () => {
+    setModalOpen(true)
+    dispatch(postOrder(ids))
+  }
+
+  const orderNumber = useSelector((state) => state.order.orderNumber)
 
   return (
-    <section className={`${styles.constructor} custom-scroll`}>
-      <BurgerComponent
-        classes="mr-4 mb-4"
-        isLocked={true}
-        text="Краторная булка N-200i (верх)"
-        type="top"
-        img="https://code.s3.yandex.net/react/code/bun-01.png"
-      />
-
-      <ul className={`${styles.elements} custom-scroll`}>
-        {mains.map((item) => (
-          <li key={item._id}>
-            <BurgerComponent
-              text={item.name}
-              img={item.image}
-              price={item.price}
-            />
-          </li>
-        ))}
-      </ul>
-
-      <BurgerComponent
-        classes="mr-4 mt-4"
-        isLocked={true}
-        text="Краторная булка N-200i (низ)"
-        type="bottom"
-        img="https://code.s3.yandex.net/react/code/bun-01.png"
-      />
-
-      <div className={styles.purchase}>
-        <div className={styles.summary}>
-          <p className="text text_type_digits-medium">610</p>
-          <CurrencyIcon type="primary" />
-        </div>
-        <Button
-          htmlType="button"
-          type="primary"
-          size="medium"
-          extraClass={styles.button}
-          onClick={() => setModalOpen(true)}
+    <Droppable droppableId="constructor" type="ingredients" isCombineEnabled={true}>
+      {(provided, snapshot) => (
+        <section
+          ref={provided.innerRef}
+          {...provided.droppableProps}
+          className={`${styles.constructor} custom-scroll`}
+          style={{
+            transition: "box-shadow 0.3s ease-in-out, border-radius 0.3s ease-in-out",
+            borderRadius: "80px",
+            ...(snapshot.isDraggingOver && {
+              boxShadow: "0 0 40px rgba(128, 26, 178, 0.8)",
+              overflow: "hidden"
+            })
+          }}
         >
-          Оформить заказ
-        </Button>
-      </div>
-      {modalOpened && (
-        <Modal onClose={() => setModalOpen(false)}>
-          <OrderDetails />
-        </Modal>
+          <div className={styles.wrapper}>
+            {orderedBun ? (
+              <BurgerComponent
+                classes="mr-4 mb-4"
+                isLocked={true}
+                text={`${orderedBun.name} (верх)`}
+                type="top"
+                img={orderedBun.image}
+                price={orderedBun.price}
+              />
+            ) : (
+              <div className={`${styles.top} mr-10 mb-4`}>
+                <p className="text_type_main-default">Перетащите сюда вашу булку</p>
+              </div>
+            )}
+
+            {orderedMains.length > 0 ? (
+              <Droppable droppableId="constructorList" type="ingredients" isCombineEnabled={true}>
+                {(provided, snapshot) => (
+                  <ul
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className={`${styles.elements} custom-scroll`}
+                  >
+                    {orderedMains.map((item, index) => (
+                      <Draggable key={item.dragId} draggableId={item.dragId} index={index} type="ingredient">
+                        {(provided) => (
+                          <li
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <BurgerComponent
+                              text={item.name}
+                              img={item.image}
+                              price={item.price}
+                              onClose={() => removeIngredient(item.dragId)}
+                            />
+                          </li>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </ul>
+                )}
+              </Droppable>
+            ) : (
+              <div className={`${styles.middle} mr-3`}>
+                <p className="text_type_main-default">Перетащите сюда ингредиенты</p>
+              </div>
+            )}
+
+            {orderedBun ? (
+              <BurgerComponent
+                classes="mr-4 mt-4"
+                isLocked={true}
+                text={`${orderedBun.name} (низ)`}
+                type="bottom"
+                img={orderedBun.image}
+                price={orderedBun.price}
+              />
+            ) : (
+              <div className={`${styles.bottom} mr-10 mb-4`}>
+                <p className="text_type_main-default">Перетащите сюда вашу булку</p>
+              </div>
+            )}
+
+            <div className={styles.purchase}>
+              <div className={styles.summary}>
+                <p className="text text_type_digits-medium">{totalPrice}</p>
+                <CurrencyIcon type="primary" />
+              </div>
+              <Button
+                htmlType="button"
+                type="primary"
+                size="medium"
+                extraClass={styles.button}
+                onClick={handleOrderCreate}
+                disabled={allOrderedIngredients.length > 0 ? false : true}
+              >
+                Оформить заказ
+              </Button>
+            </div>
+            {modalOpened && (
+              <Modal onClose={() => setModalOpen(false)}>
+                <OrderDetails orderNumber={orderNumber} />
+              </Modal>
+            )}
+          </div>
+        </section>
       )}
-    </section>
+    </Droppable>
   )
 }
 
 export default memo(BurgerConstructor)
 
-BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropType).isRequired
-}
+// BurgerConstructor.propTypes = {
+//   ingredients: PropTypes.arrayOf(ingredientPropType).isRequired
+// }

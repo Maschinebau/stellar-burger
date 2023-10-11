@@ -1,28 +1,41 @@
-import { IngredientItem } from '../ingredient-item/ingredient-item'
-import styles from './ingredient-group.module.css'
+import { IngredientItem } from "../ingredient-item/ingredient-item"
+import styles from "./ingredient-group.module.css"
 import { ingredientPropType } from "../../../utils/prop-types"
 import PropTypes from "prop-types"
+import { Droppable, Draggable } from "react-beautiful-dnd"
 
-
-export function IngredientGroup(props) {
-  const { title, listItems, id } = props
-
+export function IngredientGroup({ title, listItems, id }) {
   return (
-    <div id={id}>
-      <h2 className={`text text_type_main-medium pb-6`}>{title}</h2>
-      <ul className={styles.list} >
-        {listItems.map((item) =>
-          <li key={item._id}>
-            <IngredientItem ingredient={item} />
-          </li>
-        )}
-      </ul>
-    </div>
+    <Droppable droppableId={id} type="ingredients">
+      {(provided) => (
+        <div id={id} ref={provided.innerRef} {...provided.droppableProps}>
+          <h2 className={`text text_type_main-medium pb-6`}>{title}</h2>
+          <ul className={styles.list}>
+            {listItems.map((item, index) => (
+              <Draggable
+                key={item.dragId}
+                draggableId={item.dragId}
+                index={index}
+                type="ingredient"
+                shouldClone={true}
+              >
+                {(provided, snapshot) => (
+                  <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                    <IngredientItem ingredient={item} />
+                  </li>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </ul>
+        </div>
+      )}
+    </Droppable>
   )
 }
 
 IngredientGroup.propTypes = {
   title: PropTypes.string,
   listItems: PropTypes.arrayOf(ingredientPropType).isRequired,
-  id: PropTypes.string,
-} 
+  id: PropTypes.string
+}

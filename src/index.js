@@ -1,24 +1,25 @@
 import ReactDOM from "react-dom"
 import App from "./components/app/app"
 import reportWebVitals from "./reportWebVitals"
-import { compose, applyMiddleware } from "redux"
 import { configureStore } from "@reduxjs/toolkit"
 import { Provider } from "react-redux"
-import { rootReducer } from "./services/reducers"
+import thunk from "redux-thunk"
+import ingredientsReducer from "./store/slices/ingredientsSlice"
+import constructorReducer from "./store/slices/constructorSlice"
+import orderReducer from './store/slices/orderSlice'
+import currentIngredientReducer from './store/slices/currentIngredientSlice'
 
-const composeEnhancers =
-  typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-    : compose
 
-const enhancer = composeEnhancers(applyMiddleware())
-
-const store = configureStore(
-  {
-    reducer: rootReducer
+export const store = configureStore({
+  reducer: {
+    ingredients: ingredientsReducer,
+    currentIngredient: currentIngredientReducer,
+    burgerConstructor: constructorReducer,
+    order: orderReducer
   },
-  enhancer
-)
+  devTools: true,
+  middleware: [thunk]
+})
 
 ReactDOM.render(
   <Provider store={store}>
@@ -27,7 +28,4 @@ ReactDOM.render(
   document.getElementById("root")
 )
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals()
