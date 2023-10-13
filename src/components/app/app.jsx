@@ -2,7 +2,7 @@ import styles from "./app.module.css"
 import { AppHeader } from "../app-header/app-header"
 import { BurgerConstructor } from "../burger-constructor/burger-constructor"
 import { BurgerIngredients } from "../burger-Ingredients/burger-Ingredients"
-import { ingredients_URL } from "../../utils/constants"
+import { BASE_URL } from "../../utils/constants"
 import { useEffect, useCallback } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { fetchIngredients } from "../../store/slices/ingredientsSlice"
@@ -10,7 +10,7 @@ import { DragDropContext } from "react-beautiful-dnd"
 import {
   addToConstructor,
   removeFromConstructor,
-  updateConstructor
+  updateMains
 } from "../../store/slices/constructorSlice"
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchIngredients(ingredients_URL))
+    dispatch(fetchIngredients(`${BASE_URL}/ingredients`))
   }, [dispatch])
 
   const handleDragEnd = useCallback(
@@ -47,7 +47,7 @@ function App() {
         source.droppableId === "constructorList" &&
         destination.droppableId === "constructorList"
       ) {
-        dispatch(updateConstructor(reorderedOrderList))
+        dispatch(updateMains(reorderedOrderList))
       }
     },
     [dispatch, ingredients, orderedIngredients]

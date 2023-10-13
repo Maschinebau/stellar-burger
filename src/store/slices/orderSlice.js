@@ -1,29 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { orders_URL } from "../../utils/constants"
+import { BASE_URL } from "../../utils/constants"
+import { checkResponse } from "../../utils/constants"
 
 export const postOrder = createAsyncThunk("order/postOrder", async (ids) => {
-  try {
-    debugger
-    const response = await fetch(orders_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        ingredients: ids
-      })
+  const response = await fetch(`${BASE_URL}/orders`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      ingredients: ids
     })
-
-    if (!response.ok) {
-      throw new Error("Server response was not ok")
-    }
-
-    const data = await response.json()
-    return data
-  } catch (error) {
-    return error.message
-  }
-})
+  });
+  const data = await checkResponse(response);
+  return data;
+});
 
 const orderSlice = createSlice({
   name: "order",
@@ -39,13 +30,17 @@ const orderSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(postOrder.fulfilled, (state, action) => {
-      state.orderNumber = action.payload.order.number
-      state.name = action.payload.name
-      state.sucess = action.payload.sucess
-    })
+    builder
+      .addCase(postOrder.fulfilled, (state, action) => {
+        state.orderNumber = action.payload.order.number
+        state.name = action.payload.name
+        state.sucess = action.payload.sucess
+      })
+      .addCase(postOrder.rejected, (state, action) => {
+        state.error = action.error.message
+      })
   }
 })
 
-export const { setOrderNumber } = orderSlice.actions
+export const { setOrder } = orderSlice.actions
 export default orderSlice.reducer

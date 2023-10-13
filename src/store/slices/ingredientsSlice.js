@@ -1,19 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { data } from "../../utils/data"
+import { checkResponse } from "../../utils/constants"
 import { v4 as uuid } from "uuid"
 
 export const fetchIngredients = createAsyncThunk("ingredients/fetchIngredients", async (url) => {
-  try {
-    const response = await fetch(url)
-    if (!response.ok) {
-      throw new Error("Server response was not ok")
-    }
-    const result = await response.json()
-    return result.data
-  } catch (error) {
-    console.error("Error in obtaining ingredients, the data is taken from the local storage", error)
-    return data
-  }
+  const response = await fetch(url)
+  const result = await checkResponse(response)
+  return result.data
 })
 
 const ingredientsSlice = createSlice({
@@ -44,6 +37,7 @@ const ingredientsSlice = createSlice({
       .addCase(fetchIngredients.rejected, (state, action) => {
         state.loading = false
         state.error = action.error.message
+        state.ingredients = data
       })
   }
 })

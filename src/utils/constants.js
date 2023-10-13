@@ -1,2 +1,8 @@
-export const ingredients_URL = "https://norma.nomoreparties.space/api/ingredients"
-export const orders_URL = "https://norma.nomoreparties.space/api/orders"
+export const BASE_URL = "https://norma.nomoreparties.space/api"
+export const checkResponse = async (response) => {
+  if (!response.ok) {
+    throw new Error("Server response was not ok")
+  }
+  const data = await response.json()
+  return data
+}

@@ -20,11 +20,14 @@ const constructorSlice = createSlice({
       state.buns = state.buns.filter((ingredient) => ingredient.dragId !== action.payload)
       state.mains = state.mains.filter((ingredient) => ingredient.dragId !== action.payload)
     },
-    updateConstructor: (state, action) => {
+    updateMains: (state, action) => {
       state.mains = action.payload
-    }
+    },
+    updateBuns: (state, action) => {
+      state.buns = action.payload
+    },
   }
 })
 
-export const { addToConstructor, removeFromConstructor, updateConstructor } = constructorSlice.actions
+export const { addToConstructor, removeFromConstructor, updateMains, updateBuns } = constructorSlice.actions
 export default constructorSlice.reducer

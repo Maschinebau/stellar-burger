@@ -8,7 +8,7 @@ import { ingredientPropType } from "../../utils/prop-types"
 // import PropTypes from "prop-types"
 import { useSelector, useDispatch } from "react-redux"
 import { Droppable, Draggable } from "react-beautiful-dnd"
-import { removeFromConstructor } from "../../store/slices/constructorSlice"
+import { removeFromConstructor, updateMains, updateBuns } from "../../store/slices/constructorSlice"
 import { postOrder } from "../../store/slices/orderSlice"
 
 export function BurgerConstructor() {
@@ -31,6 +31,8 @@ export function BurgerConstructor() {
   const handleOrderCreate = () => {
     setModalOpen(true)
     dispatch(postOrder(ids))
+    dispatch(updateMains([]))
+    dispatch(updateBuns([]))
   }
 
   const orderNumber = useSelector((state) => state.order.orderNumber)
@@ -54,7 +56,7 @@ export function BurgerConstructor() {
           <div className={styles.wrapper}>
             {orderedBun ? (
               <BurgerComponent
-                classes="mr-4 mb-4"
+                classes="mr-8"
                 isLocked={true}
                 text={`${orderedBun.name} (верх)`}
                 type="top"
@@ -62,7 +64,7 @@ export function BurgerConstructor() {
                 price={orderedBun.price}
               />
             ) : (
-              <div className={`${styles.top} mr-10 mb-4`}>
+              <div className={`${styles.top} ${styles.placeholder} mr-10 mb-4`}>
                 <p className="text_type_main-default">Перетащите сюда вашу булку</p>
               </div>
             )}
@@ -76,7 +78,13 @@ export function BurgerConstructor() {
                     className={`${styles.elements} custom-scroll`}
                   >
                     {orderedMains.map((item, index) => (
-                      <Draggable key={item.dragId} draggableId={item.dragId} index={index} type="ingredient">
+                      <Draggable
+                        key={item.dragId}
+                        draggableId={item.dragId}
+                        index={index}
+                        type="ingredient"
+                        Draggable={true}
+                      >
                         {(provided) => (
                           <li
                             ref={provided.innerRef}
@@ -98,14 +106,14 @@ export function BurgerConstructor() {
                 )}
               </Droppable>
             ) : (
-              <div className={`${styles.middle} mr-3`}>
+              <div className={`${styles.middle} ${styles.placeholder} mr-3`}>
                 <p className="text_type_main-default">Перетащите сюда ингредиенты</p>
               </div>
             )}
 
             {orderedBun ? (
               <BurgerComponent
-                classes="mr-4 mt-4"
+                classes="mr-8"
                 isLocked={true}
                 text={`${orderedBun.name} (низ)`}
                 type="bottom"
@@ -113,7 +121,7 @@ export function BurgerConstructor() {
                 price={orderedBun.price}
               />
             ) : (
-              <div className={`${styles.bottom} mr-10 mb-4`}>
+              <div className={`${styles.bottom} ${styles.placeholder} mr-10 mb-4`}>
                 <p className="text_type_main-default">Перетащите сюда вашу булку</p>
               </div>
             )}
@@ -136,7 +144,11 @@ export function BurgerConstructor() {
             </div>
             {modalOpened && (
               <Modal onClose={() => setModalOpen(false)}>
-                <OrderDetails orderNumber={orderNumber} />
+                {orderNumber ? (
+                  <OrderDetails orderNumber={orderNumber} />
+                ) : (
+                  <div className={styles.loading}></div>
+                )}
               </Modal>
             )}
           </div>

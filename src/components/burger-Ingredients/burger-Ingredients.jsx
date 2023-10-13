@@ -1,11 +1,8 @@
-import { useState, useEffect, memo, useCallback } from "react"
+import { useState, useEffect, memo, useCallback, useRef } from "react"
 import styles from "./burger-Ingredients.module.css"
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components"
 import { IngredientGroup } from "./ingredient-group/ingredient-group"
-import { ingredientPropType } from "../../utils/prop-types"
-import PropTypes from "prop-types"
-import { useSelector, useDispatch } from "react-redux"
-import { v4 as uuid } from "uuid"
+import { useSelector } from "react-redux"
 
 export function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState("bun")
@@ -14,10 +11,37 @@ export function BurgerIngredients() {
   const sauces = ingredients.filter((item) => item.type === "sauce")
   const mains = ingredients.filter((item) => item.type === "main")
 
+  const ingredientsContainerRef = useRef()
+  const bunsGroupRef = useRef()
+  const saucesGroupRef = useRef()
+  const mainsGroupRef = useRef()
+
   const handleTabClick = useCallback((value) => {
     setCurrentTab(value)
     document.getElementById(value).scrollIntoView({ behavior: "smooth" })
   }, [])
+
+  const handleScroll = useCallback(() => {
+    const container = ingredientsContainerRef.current
+    const scrollPosition = container.scrollTop
+    const bunGroupHeight = bunsGroupRef.current.offsetHeight
+    const sauceGroupHeight = saucesGroupRef.current.offsetHeight
+
+    if (scrollPosition < bunGroupHeight) {
+      setCurrentTab("bun")
+    } else if (scrollPosition < bunGroupHeight + sauceGroupHeight) {
+      setCurrentTab("sauce")
+    } else {
+      setCurrentTab("main")
+    }
+  }, [])
+
+  useEffect(() => {
+    ingredientsContainerRef.current.addEventListener("scroll", handleScroll)
+    return () => {
+      ingredientsContainerRef.current.removeEventListener("scroll", handleScroll)
+    }
+  }, [handleScroll])
 
   return (
     <section className={styles.section}>
@@ -33,10 +57,10 @@ export function BurgerIngredients() {
           Начинки
         </Tab>
       </div>
-      <div className={`${styles.ingredientsContainer} custom-scroll mt-10`}>
-        <IngredientGroup id="bun" title="Булка" listItems={buns} />
-        <IngredientGroup id="sauce" title="Соусы" listItems={sauces} />
-        <IngredientGroup id="main" title="Начинки" listItems={mains} />
+      <div className={`${styles.ingredientsContainer} custom-scroll mt-10`} ref={ingredientsContainerRef}>
+        <IngredientGroup id="bun" title="Булка" listItems={buns} ref={bunsGroupRef} />
+        <IngredientGroup id="sauce" title="Соусы" listItems={sauces} ref={saucesGroupRef} />
+        <IngredientGroup id="main" title="Начинки" listItems={mains} ref={mainsGroupRef} />
       </div>
     </section>
   )
@@ -44,6 +68,3 @@ export function BurgerIngredients() {
 
 export default memo(BurgerIngredients)
 
-// BurgerIngredients.propTypes = {
-//   ingredients: PropTypes.arrayOf(ingredientPropType).isRequired,
-// }
