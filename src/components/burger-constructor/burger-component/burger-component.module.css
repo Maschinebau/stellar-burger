@@ -4,5 +4,4 @@
   column-gap: 8px;
   align-items: center;
   justify-content: flex-end;
-  width: clamp(460px, 35vw, 600px);
 }
