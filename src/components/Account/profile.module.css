@@ -1,0 +1,19 @@
+.profile {
+  display: flex;
+  gap: 32px 60px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.wrapper {
+  display: flex;
+  column-gap: 60px;
+}
+
+.form {
+  row-gap: 24px;
+}
+
+.text {
+  max-width: 320px;
+}

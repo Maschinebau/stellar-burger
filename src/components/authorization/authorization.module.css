@@ -1,0 +1,26 @@
+.wrapper {
+  text-align: center;
+  padding-top: clamp(60px, 10vw, 180px);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px 0;
+}
+
+.button {
+  padding: 16px 40px;
+  display: inline;
+}
+
+.link {
+  text-decoration: none;
+  color: var(--interface-accent, #4C4CFF);
+}
+
+.link:hover {
+  color: #f2f2f3;
+  transition: .3s ease-in;
+}

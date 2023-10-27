@@ -6,9 +6,9 @@ import { Provider } from "react-redux"
 import thunk from "redux-thunk"
 import ingredientsReducer from "./store/slices/ingredientsSlice"
 import constructorReducer from "./store/slices/constructorSlice"
-import orderReducer from './store/slices/orderSlice'
-import currentIngredientReducer from './store/slices/currentIngredientSlice'
-
+import orderReducer from "./store/slices/orderSlice"
+import currentIngredientReducer from "./store/slices/currentIngredientSlice"
+import { BrowserRouter } from "react-router-dom"
 
 export const store = configureStore({
   reducer: {
@@ -22,9 +22,11 @@ export const store = configureStore({
 })
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <BrowserRouter>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </BrowserRouter>,
   document.getElementById("root")
 )
 

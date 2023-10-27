@@ -1,0 +1,21 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  background-color: #131316;
+  color: #f2f2f3;
+  height: 100vh;
+}
+
+.constructor {
+  display: flex;
+  justify-content: center;
+  column-gap: 40px;
+  height: 100vh;
+}
+
+.loginMain {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  max-height: 100%;
+}

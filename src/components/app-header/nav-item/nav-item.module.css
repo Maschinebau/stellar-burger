@@ -5,7 +5,7 @@
   cursor: pointer;
 }
 
-.item:hover {
+.text:hover {
   color: #f2f2f3;
   transition: .3s ease-in;
 }
@@ -13,4 +13,9 @@
 .text {
   padding: 0px;
   margin: 0px;
+  text-decoration: none;
 }
+
+/* .active {
+  color: #f2f2f3;
+} */
