@@ -1,8 +1,5 @@
-.profile {
-  display: flex;
-  gap: 32px 60px;
-  flex-direction: column;
-  align-items: flex-start;
+.account {
+
 }
 
 .wrapper {
@@ -11,9 +8,12 @@
 }
 
 .form {
+  display: flex;
+  flex-direction: column;
   row-gap: 24px;
 }
 
 .text {
   max-width: 320px;
+
 }

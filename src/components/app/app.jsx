@@ -1,21 +1,39 @@
-import styles from "./app.module.css"
-import { AppHeader } from "../app-header/app-header"
 import { Routes, Route } from "react-router-dom"
-import { Constructor } from "../../pages/Constructor"
-import { Profile } from "../../pages/Profile"
-import { Layout } from "../../pages/Layout"
-import { Login } from "../../pages/Login"
-import { Register } from '../../pages/Register'
-import { ForgotPassword } from '../../pages/Forgot-password'
+import { Account } from "../account/Account"
+import { Constructor, Profile, Layout, Login, Register, ForgotPassword, ResetPassword } from "../../pages"
+import { RequireAuth } from "../hoc/RequireAuth"
+import { useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { refreshTokenRequest, resetUser } from "../../store/slices/userSlice"
+import { getCookie } from "../../utils/api"
 
 function App() {
+  const dispatch = useDispatch()
+
+  // useEffect(() => {
+  //   const refreshToken = getCookie("refreshToken")
+  //   if (!refreshToken) return
+  //   dispatch(refreshTokenRequest())
+  // }, [dispatch])
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Constructor />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route
+          path="profile"
+          element={
+            <RequireAuth>
+              <Profile />
+            </RequireAuth>
+          }
+        />
+        <Route path="login/">
+          <Route index element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="reset-password" element={<ResetPassword />} />
+        </Route>
       </Route>
     </Routes>
   )

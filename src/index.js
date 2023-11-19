@@ -8,6 +8,7 @@ import ingredientsReducer from "./store/slices/ingredientsSlice"
 import constructorReducer from "./store/slices/constructorSlice"
 import orderReducer from "./store/slices/orderSlice"
 import currentIngredientReducer from "./store/slices/currentIngredientSlice"
+import userReducer from './store/slices/userSlice'
 import { BrowserRouter } from "react-router-dom"
 
 export const store = configureStore({
@@ -15,7 +16,8 @@ export const store = configureStore({
     ingredients: ingredientsReducer,
     currentIngredient: currentIngredientReducer,
     burgerConstructor: constructorReducer,
-    order: orderReducer
+    order: orderReducer,
+    user: userReducer
   },
   devTools: true,
   middleware: [thunk]

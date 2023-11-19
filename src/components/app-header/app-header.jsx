@@ -13,7 +13,7 @@ export function AppHeader() {
             </NavItem>
           </li>
           <li className={styles.item}>
-            <NavItem IconComponent={ListIcon} url="/ingredients">
+            <NavItem IconComponent={ListIcon} url="ingredients">
               Лента заказов
             </NavItem>
           </li>
@@ -21,7 +21,7 @@ export function AppHeader() {
         <div className={styles.logo}>
           <Logo />
         </div>
-        <NavItem IconComponent={ProfileIcon} url="/login">
+        <NavItem IconComponent={ProfileIcon} url="profile">
           Личный кабинет
         </NavItem>
       </nav>

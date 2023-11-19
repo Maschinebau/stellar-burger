@@ -1,15 +1,29 @@
 import styles from "./nav-item.module.css"
-import { NavLink } from "react-router-dom"
+import { NavLink, useMatch } from "react-router-dom"
+import { useState, useEffect } from "react"
 
 export function NavItem(props) {
-  const { isActive, IconComponent } = props
+  const { IconComponent, url } = props
+  const [isActive, setIsActive] = useState(false)
+  
+  const match = useMatch({
+    path: url,
+    end: url.length === 1
+  })
 
-  const setActive = ({ isActive }) =>
-    `${styles.text} text text_type_main-default ${!isActive ? "text_color_inactive" : ""}`
+  useEffect(() => {
+    setIsActive(match !== null)
+  }, [match])
+
   return (
     <div className={styles.item}>
       <IconComponent type={isActive ? "primary" : "secondary"} />
-      <NavLink className={setActive} to={props.url}>
+      <NavLink
+        className={({ isActive }) =>
+          `${styles.text} text_type_main-default text_color_inactive ${isActive ? styles.active : ""}`
+        }
+        to={props.url}
+      >
         {props.children}
       </NavLink>
     </div>

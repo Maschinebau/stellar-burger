@@ -37,7 +37,7 @@ const ingredientsSlice = createSlice({
       .addCase(fetchIngredients.rejected, (state, action) => {
         state.loading = false
         state.error = action.error.message
-        state.ingredients = data
+        state.ingredients = data.map((ingredient) => ({ ...ingredient, dragId: uuid() }))
       })
   }
 })
