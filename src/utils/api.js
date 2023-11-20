@@ -6,7 +6,6 @@ export const checkResponse = async (response) => {
     throw new Error("Server response was not ok")
   }
   const data = await response.json()
-  console.log(data)
   return data
 }
 
@@ -28,7 +27,7 @@ export const createUser = async (name, email, password) => {
     const data = handleApiResponse(response)
     console.log(data)
   } catch (error) {
-    console.error(error)
+    console.error('Error during registration', error)
   }
 }
 
@@ -45,7 +44,7 @@ export const sendResetMessage = async (email) => {
       return false
     }
   } catch (error) {
-    console.error(error)
+    console.error('Error when sending an email', error)
     return false
   }
 }
@@ -111,5 +110,3 @@ export const getCookies = () => {
   })
   return cookieData
 }
-
-console.log(getCookies())

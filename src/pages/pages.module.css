@@ -33,12 +33,14 @@
   display: flex;
   flex-direction: column;
   width: 320px;
+  padding-top: 25px;
 }
 
 .navItem {
   text-decoration: none;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   transition: color 0.3s ease-in;
+  max-width: 220px;
 }
 
 .navItem:hover {

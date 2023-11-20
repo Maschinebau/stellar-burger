@@ -4,24 +4,22 @@ import { Constructor, Profile, Layout, Login, Register, ForgotPassword, ResetPas
 import { RequireAuth } from "../hoc/RequireAuth"
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
-import { refreshTokenRequest, resetUser } from "../../store/slices/userSlice"
+import { refreshTokenRequest, resetUser, checkAuth } from "../../store/slices/userSlice"
 import { getCookie } from "../../utils/api"
 
 function App() {
   const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   const refreshToken = getCookie("refreshToken")
-  //   if (!refreshToken) return
-  //   dispatch(refreshTokenRequest())
-  // }, [dispatch])
+  useEffect(() => {
+    dispatch(checkAuth())
+  }, [dispatch])
 
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Constructor />} />
         <Route
-          path="profile"
+          path="profile/*"
           element={
             <RequireAuth>
               <Profile />

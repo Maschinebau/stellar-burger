@@ -1,9 +1,20 @@
 import { Account } from "../components/account/Account"
+import { OrdersHistory } from "../components/orders-history/ordersHistory"
 import styles from "./pages.module.css"
 import { NavLink, useMatch } from "react-router-dom"
 import { useState, useEffect } from "react"
+import { Routes, Route } from "react-router-dom"
+import { useAuth } from '../components/hooks/useAuth'
+import { resetUser } from '../store/slices/userSlice'
+import { useDispatch } from "react-redux"
 
 export const Profile = () => {
+  const { isAuth, email, name } = useAuth()
+  const dispatch = useDispatch()
+
+  const onExit = () => {
+    dispatch(resetUser())
+  }
 
 
   return (
@@ -13,7 +24,7 @@ export const Profile = () => {
           className={({ isActive }) =>
             `${styles.navItem} text_type_main-medium text_color_inactive ${isActive ? styles.activeNav : ""}`
           }
-          to='/profile'
+          to="/profile"
         >
           Профиль
         </NavLink>
@@ -21,7 +32,7 @@ export const Profile = () => {
           className={({ isActive }) =>
             `${styles.navItem} text_type_main-medium text_color_inactive ${isActive ? styles.active : ""}`
           }
-          to='/orders-history'
+          to="/profile/orders"
         >
           История заказов
         </NavLink>
@@ -29,7 +40,8 @@ export const Profile = () => {
           className={({ isActive }) =>
             `${styles.navItem} text_type_main-medium text_color_inactive ${isActive ? styles.active : ""}`
           }
-          to=''
+          to="/"
+          onClick={() => onExit()}
         >
           Выход
         </NavLink>
@@ -37,7 +49,10 @@ export const Profile = () => {
           В этом разделе вы можете изменить свои персональные данные
         </p>
       </nav>
-      <Account />
+      <Routes>
+        <Route exact path="/" element={<Account />} />
+        <Route path="/orders" element={<OrdersHistory/>} />
+      </Routes>
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import styles from "./authorization.module.css"
 import { EmailInput, Button } from "@ya.praktikum/react-developer-burger-ui-components"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import { useState, useRef, useCallback } from "react"
 import { sendResetMessage } from "../../utils/api"
 
@@ -8,15 +8,17 @@ export const PasswordForgot = () => {
   const [email, setEmail] = useState("")
   const navigate = useNavigate()
   const inputRef = useRef()
+  const location = useLocation()
 
   const onSubmit = useCallback(() => {
     if (sendResetMessage(email)) {
-      navigate('/login/reset-password');
+      navigate("/login/reset-password")
+      
     } else {
-      inputRef.current.error = true;
-      inputRef.current.errorText = 'Укажите, пожалуйста, правильную почту';
+      inputRef.current.error = true
+      inputRef.current.errorText = "Укажите, пожалуйста, правильную почту"
     }
-  }, [email, navigate]);
+  }, [email, navigate])
 
   return (
     <div className={styles.wrapper}>

@@ -1,8 +1,11 @@
 import styles from "./app-header.module.css"
 import { BurgerIcon, ListIcon, Logo, ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components"
 import { NavItem } from "./nav-item/nav-item"
+import { useAuth } from '../hooks/useAuth'
 
 export function AppHeader() {
+  const { isAuth, email, name } = useAuth()
+
   return (
     <header className={`${styles.header} text`}>
       <nav className={styles.navbar}>
@@ -22,7 +25,7 @@ export function AppHeader() {
           <Logo />
         </div>
         <NavItem IconComponent={ProfileIcon} url="profile">
-          Личный кабинет
+          {isAuth ? name : 'Личный кабинет'}
         </NavItem>
       </nav>
     </header>

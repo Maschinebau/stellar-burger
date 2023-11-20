@@ -42,7 +42,6 @@ export const PasswordReset = () => {
         ></Input>
         <Button
           htmlType="button"
-          size="undefined"
           extraClass={`${styles.button} text text_type_main-default`}
           onClick={onSubmit}
         >

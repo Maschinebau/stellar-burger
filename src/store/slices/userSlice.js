@@ -18,12 +18,13 @@ export const loginRequest = createAsyncThunk("auth/authorization", async ({ emai
   const data = await checkResponse(response)
   const expirationTime = 20 * 60 * 1000
   setCookie("accessToken", data.accessToken, expirationTime)
-  setCookie("refreshToken", data.refreshToken, 1)
+  localStorage.setItem("refreshToken", data.refreshToken)
   return data
 })
 
-export const refreshTokenRequest = createAsyncThunk("auth/refreshToken", async () => {
-  const refreshToken = getCookie("refreshToken")
+export const accessTokenRequest = async () => {
+  const refreshToken = localStorage.getItem("refreshToken")
+  if (!refreshToken) return
   const response = await fetch(`${BASE_URL}/auth/token`, {
     method: "POST",
     headers: {
@@ -33,13 +34,38 @@ export const refreshTokenRequest = createAsyncThunk("auth/refreshToken", async (
       token: refreshToken
     })
   })
-
   const data = await checkResponse(response)
   const expirationTime = 20 * 60 * 1000
   setCookie("accessToken", data.accessToken, expirationTime)
-  console.log(data)
+  localStorage.setItem("refreshToken", data.refreshToken)
+  return data.success
+}
+
+export const getUser = createAsyncThunk("auth/getUsers", async () => {
+  const response = await fetch(`${BASE_URL}/auth/user`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+      authorization: getCookie("accessToken")
+    }
+  })
+  const data = await checkResponse(response)
   return data
 })
+
+export const checkAuth = () => {
+  return async (dispatch) => {
+    try {
+      const res = await dispatch(getUser())
+      if (!res.payload.success) {
+        await dispatch(accessTokenRequest())
+        await dispatch(getUser())
+      }
+    } catch (error) {
+      console.log("Check-auth: User unauthorized")
+    }
+  }
+}
 
 const userSlice = createSlice({
   name: "user",
@@ -58,6 +84,7 @@ const userSlice = createSlice({
       state.isAuth = false
       state.email = null
       state.name = null
+      localStorage.removeItem("refreshToken")
     }
   },
   extraReducers: (builder) => {
@@ -71,12 +98,13 @@ const userSlice = createSlice({
       console.log("Error occurred during login:", action.error)
       throw action.error
     })
-    builder.addCase(refreshTokenRequest.fulfilled, (state, action) => {
+    builder.addCase(getUser.fulfilled, (state, action) => {
       state.isAuth = true
+      state.email = action.payload.user.email
+      state.name = action.payload.user.name
     })
-    builder.addCase(refreshTokenRequest.rejected, (state, action) => {
+    builder.addCase(getUser.rejected, (state, action) => {
       state.isAuth = false
-      console.log("Error occurred during token refresh:", action.error)
       throw action.error
     })
   }
