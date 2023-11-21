@@ -54,3 +54,7 @@
 .text {
   padding-top: 80px;
 }
+
+.IngredientInfo p:first-child {
+  align-self: center;
+}

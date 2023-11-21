@@ -1,8 +1,14 @@
 import styles from "./popups.module.css"
 import { ingredientPropType } from "../../utils/prop-types"
 import PropTypes from "prop-types"
+import { useParams } from "react-router-dom"
+import { useSelector, useDispatch } from "react-redux"
 
-export function IngredientDetails({ ingredient }) {
+export function IngredientDetails() {
+  const { id } = useParams()
+  const ingredient = useSelector((state) => state.ingredients.ingredients.find((item) => item._id === id))
+
+
   return (
     <div className={styles.wrapper}>
       <p className={`${styles.title} text text_type_main-large pt-3`}>Детали ингридиента</p>
@@ -35,6 +41,6 @@ export function IngredientDetails({ ingredient }) {
   )
 }
 
-IngredientDetails.propTypes = {
-  ingredient: ingredientPropType.isRequired
-}
+// IngredientDetails.propTypes = {
+//   ingredient: ingredientPropType.isRequired
+// }

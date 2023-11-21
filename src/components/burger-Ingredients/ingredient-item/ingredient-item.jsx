@@ -7,16 +7,21 @@ import { ingredientPropType } from "../../../utils/prop-types"
 import PropTypes from "prop-types"
 import { useSelector, useDispatch } from "react-redux"
 import { setCurrentIngredient } from "../../../store/slices/currentIngredientSlice"
+import { useNavigate, useSearchParams } from "react-router-dom"
 
 export function IngredientItem({ ingredient }) {
   const [isClicked, setIsClicked] = useState(false)
   const orderedMains = useSelector((state) => state.burgerConstructor.mains)
   const orderedBuns = useSelector((state) => state.burgerConstructor.buns)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const onClick = () => {
     setIsClicked(true)
     dispatch(setCurrentIngredient(ingredient))
+    // setSearchParams({ id: ingredient._id })
+    navigate(`/ingredients/${ingredient._id}`)
   }
 
   const count = useMemo(() => {
@@ -38,11 +43,11 @@ export function IngredientItem({ ingredient }) {
           extraClass={`m-1 ${count > 0 ? styles.visible : styles.hidden}`}
         />
       </div>
-      {isClicked && (
+      {/* {isClicked && (
         <Modal onClose={() => setIsClicked(!isClicked)}>
           <IngredientDetails ingredient={ingredient} />
         </Modal>
-      )}
+      )} */}
     </>
   )
 }
