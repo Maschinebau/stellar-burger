@@ -9,7 +9,7 @@ import constructorReducer from "./store/slices/constructorSlice"
 import orderReducer from "./store/slices/orderSlice"
 import currentIngredientReducer from "./store/slices/currentIngredientSlice"
 import userReducer from './store/slices/userSlice'
-import { BrowserRouter } from "react-router-dom"
+import { rowserRouter as Router } from "react-router-dom"
 
 export const store = configureStore({
   reducer: {
@@ -24,11 +24,11 @@ export const store = configureStore({
 })
 
 ReactDOM.render(
-  <BrowserRouter>
+  <Router>
     <Provider store={store}>
       <App />
     </Provider>
-  </BrowserRouter>,
+  </Router>,
   document.getElementById("root")
 )
 
