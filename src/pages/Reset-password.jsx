@@ -8,8 +8,6 @@ export const ResetPassword = () => {
   const { isAuth } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
-  console.log(location)
-
 
     if (isAuth) {
       navigate("/profile", { replace: true })

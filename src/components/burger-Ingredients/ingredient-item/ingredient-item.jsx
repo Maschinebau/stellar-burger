@@ -7,7 +7,7 @@ import { ingredientPropType } from "../../../utils/prop-types"
 import PropTypes from "prop-types"
 import { useSelector, useDispatch } from "react-redux"
 import { setCurrentIngredient } from "../../../store/slices/currentIngredientSlice"
-import { useNavigate, useSearchParams } from "react-router-dom"
+import { useNavigate, useLocation, Link } from "react-router-dom"
 
 export function IngredientItem({ ingredient }) {
   const [isClicked, setIsClicked] = useState(false)
@@ -15,13 +15,13 @@ export function IngredientItem({ ingredient }) {
   const orderedBuns = useSelector((state) => state.burgerConstructor.buns)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const location = useLocation()
+  const ingredientId = ingredient["_id"]
 
   const onClick = () => {
     setIsClicked(true)
     dispatch(setCurrentIngredient(ingredient))
-    // setSearchParams({ id: ingredient._id })
-    navigate(`/ingredients/${ingredient._id}`)
+    // navigate(`/ingredients/${ingredient._id}`, { state: { background: true } })
   }
 
   const count = useMemo(() => {
@@ -31,23 +31,30 @@ export function IngredientItem({ ingredient }) {
 
   return (
     <>
-      <div className={styles.item} onClick={onClick} id={ingredient._id}>
-        <img className="pb-2" src={ingredient.image} alt={ingredient.name} loading="lazy" />
-        <p className={`${styles.currency} text text_type_digits-default pb-2`}>
-          {ingredient.price} <CurrencyIcon />
-        </p>
-        <p className="text text_type_main-default">{ingredient.name}</p>
-        <Counter
-          count={count}
-          size="default"
-          extraClass={`m-1 ${count > 0 ? styles.visible : styles.hidden}`}
-        />
-      </div>
-      {/* {isClicked && (
+      <Link
+        key={ingredientId}
+        to={`/ingredients/${ingredientId}`}
+        state={{ background: location }}
+        className={styles.link}
+      >
+        <div className={styles.item} onClick={onClick} id={ingredient._id}>
+          <img className="pb-2" src={ingredient.image} alt={ingredient.name} loading="lazy" />
+          <p className={`${styles.currency} text text_type_digits-default pb-2`}>
+            {ingredient.price} <CurrencyIcon />
+          </p>
+          <p className="text text_type_main-default">{ingredient.name}</p>
+          <Counter
+            count={count}
+            size="default"
+            extraClass={`m-1 ${count > 0 ? styles.visible : styles.hidden}`}
+          />
+        </div>
+        {/* {isClicked && (
         <Modal onClose={() => setIsClicked(!isClicked)}>
           <IngredientDetails ingredient={ingredient} />
         </Modal>
       )} */}
+      </Link>
     </>
   )
 }

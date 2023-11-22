@@ -1,36 +1,31 @@
 import styles from "./authorization.module.css"
 import { Input, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components"
 import { Link, useNavigate } from "react-router-dom"
-import { useState, useRef, useCallback } from "react"
+import { useState, useCallback } from "react"
 import { changePassword } from "../../utils/api"
 
 export const PasswordReset = () => {
   const [password, setPassword] = useState("")
   const [token, setToken] = useState("")
   const navigate = useNavigate()
-  const passwortlInputRef = useRef()
-  const tokenInputRef = useRef()
+  console.log(token)
 
-  const onSubmit = useCallback(() => {
-    if (changePassword(password, token)) {
+  const onSubmit = async (e) => {
+    e.preventDefault()
+
+    if (await changePassword(password, token)) {
       navigate("/login/")
-    } else {
-      passwortlInputRef.current.error = true
-      tokenInputRef.current.error = true
-      passwortlInputRef.current.errorText = "Укажите, пожалуйста, корректный пароль"
-      tokenInputRef.current.errorText = "Укажите, пожалуйста, правильный токен"
     }
-  }, [password, navigate])
+  }
 
   return (
     <div className={styles.wrapper}>
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={onSubmit}>
         <h2 className="text text_type_main-large">Восстановление пароля</h2>
         <PasswordInput
           placeholder="Введите новый пароль"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          ref={passwortlInputRef}
         ></PasswordInput>
         <Input
           type="text"
@@ -38,13 +33,8 @@ export const PasswordReset = () => {
           placeholder="Введите код из письма"
           value={token}
           onChange={(e) => setToken(e.target.value)}
-          ref={tokenInputRef}
         ></Input>
-        <Button
-          htmlType="button"
-          extraClass={`${styles.button} text text_type_main-default`}
-          onClick={onSubmit}
-        >
+        <Button htmlType="submit" extraClass={`${styles.button} text text_type_main-default`}>
           Восстановить
         </Button>
       </form>

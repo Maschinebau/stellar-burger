@@ -8,10 +8,11 @@ import { refreshTokenRequest, resetUser, checkAuth } from "../../store/slices/us
 import { getCookie } from "../../utils/api"
 import { IngredientDetails } from "../popups/IngredientDetails"
 import { Modal } from "../modal/modal"
+import { fetchIngredients } from "../../store/slices/ingredientsSlice"
+import { BASE_URL } from "../../utils/constants"
 
 function App() {
   const dispatch = useDispatch()
-  const ingredient = useSelector((state) => state.burgerConstructor.currentIngredient)
   const location = useLocation()
   const navigate = useNavigate()
   const background = location.state && location.state.background
@@ -24,11 +25,15 @@ function App() {
     dispatch(checkAuth())
   }, [dispatch])
 
+  useEffect(() => {
+    dispatch(fetchIngredients(`${BASE_URL}/ingredients`))
+  }, [dispatch])
+
   return (
     <>
-      <Routes>
+      <Routes location={background || location}>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Constructor />} />
+          <Route path="/" element={<Constructor />} />
           <Route
             path="profile/*"
             element={
@@ -43,7 +48,11 @@ function App() {
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="reset-password" element={<ResetPassword />} />
           </Route>
-          <Route path="/ingredients/:id" element={<IngredientDetails />}></Route>
+          <Route
+            path="/ingredients/:id"
+            element={<IngredientDetails />}
+            state={{ background: false }}
+          ></Route>
         </Route>
       </Routes>
       {background && (

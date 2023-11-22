@@ -1,69 +1,95 @@
 import axios from "axios"
-import BASE_URL from "./constants"
 
-export const checkResponse = async (response) => {
-  if (!response.ok) {
+export const axiosApi = axios.create({
+  baseURL: "https://norma.nomoreparties.space/api",
+  refresh_token_url: "https://norma.nomoreparties.space/api/auth/token"
+})
+
+export const accessTokenRefresh = async () => {
+  const refreshToken = localStorage.getItem("refreshToken")
+  if (!refreshToken) return
+  try {
+    const res = await axiosApi.post(axiosApi.defaults.refresh_token_url, {
+      token: refreshToken
+    })
+    const data = await handleApiResponse(res)
+    const expirationTime = 20 * 60 * 1000
+    setCookie("accessToken", data.accessToken, expirationTime)
+    localStorage.setItem("refreshToken", data.refreshToken)
+    return data.success
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
+axiosApi.interceptors.request.use(
+  async (config) => {
+    const accessToken = getCookie("accessToken")
+    config.headers = {
+      Authorization: accessToken,
+      Accept: "application/json",
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
+    return config
+  },
+  (error) => {
+    Promise.reject(error)
+  }
+)
+
+axiosApi.interceptors.response.use(
+  (response) => {
+    return response
+  },
+  async function (error) {
+    const originalRequest = error.config
+    if (error.response.status === 403 && !originalRequest._retry) {
+      originalRequest._retry = true
+      const accessToken = await accessTokenRefresh()
+      axios.defaults.headers.common["Authorization"] = accessToken
+      return axiosApi(originalRequest)
+    }
+    return Promise.reject(error)
+  }
+)
+
+export const checkResponse = async (res) => {
+  if (!res.ok) {
     throw new Error("Server response was not ok")
   }
-  const data = await response.json()
+  const data = await res.json()
   return data
 }
 
-export const handleApiResponse = (response) => {
-  if (!response.ok) {
+export const handleApiResponse = (res) => {
+  if (res.status !== 200) {
     console.log("Server response was not ok")
     throw new Error("Server response was not ok")
   }
-  return response.data
-}
-
-export const createUser = async (name, email, password) => {
-  try {
-    const response = await axios.post("https://norma.nomoreparties.space/api/auth/register", {
-      email: email,
-      password: password,
-      name: name
-    })
-    const data = handleApiResponse(response)
-    console.log(data)
-  } catch (error) {
-    console.error('Error during registration', error)
-  }
+  return res.data
 }
 
 export const sendResetMessage = async (email) => {
-  try {
-    const response = await axios.post("https://norma.nomoreparties.space/api/password-reset", {
-      email: email
-    })
-    const data = handleApiResponse(response)
-    if (data.success) {
-      console.log(data.message)
-      return true
-    } else {
-      return false
-    }
-  } catch (error) {
-    console.error('Error when sending an email', error)
+  const res = await axiosApi.post("/password-reset", {
+    email: email
+  })
+  const data = handleApiResponse(res)
+  if (data.success) {
+    console.log(data.message)
+    return true
+  } else {
     return false
   }
 }
-
 export const changePassword = async (password, token) => {
-  try {
-    const response = await axios.post("https://norma.nomoreparties.space/api/password-reset/reset", {
-      password: password,
-      token: token
-    })
-    const data = handleApiResponse(response)
-    if (data.success) {
-      console.log(data.message)
-      return true
-    } else {
-      return false
-    }
-  } catch (error) {
-    console.error(error)
+  const res = await axiosApi.post("/password-reset/reset", {
+    password: password,
+    token: token
+  })
+  const data = handleApiResponse(res)
+  if (data.success) {
+    return true
+  } else {
     return false
   }
 }

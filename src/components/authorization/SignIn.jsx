@@ -12,14 +12,13 @@ export const SignIn = () => {
   const navigate = useNavigate()
   
 
-  const handleLogin = () => {
-    dispatch(loginRequest({ email, password })).then(() => {
-      navigate("/")
-    })
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    await dispatch(loginRequest({ email, password }))
   }
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} onSubmit={handleLogin}>
       <form className={styles.form}>
         <h2 className="text text_type_main-large">Вход</h2>
         <EmailInput
@@ -36,10 +35,9 @@ export const SignIn = () => {
           onChange={(e) => setPassword(e.target.value)}
         ></PasswordInput>
         <Button
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           extraClass={`${styles.button} text text_type_main-default`}
-          onClick={handleLogin}
           disabled={false}
         >
           Войти

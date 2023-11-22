@@ -7,22 +7,24 @@ import { sendResetMessage } from "../../utils/api"
 export const PasswordForgot = () => {
   const [email, setEmail] = useState("")
   const navigate = useNavigate()
-  const inputRef = useRef()
   const location = useLocation()
 
-  const onSubmit = useCallback(() => {
-    if (sendResetMessage(email)) {
+  // const onSubmit = useCallback(() => {
+  //   if (sendResetMessage(email)) {
+  //     navigate("/login/reset-password")
+  //   }
+  // }, [email, navigate])
+
+  const onSubmit = async (e) => {
+    e.preventDefault()
+    if (await sendResetMessage(email)) {
       navigate("/login/reset-password")
-      
-    } else {
-      inputRef.current.error = true
-      inputRef.current.errorText = "Укажите, пожалуйста, правильную почту"
     }
-  }, [email, navigate])
+  }
 
   return (
     <div className={styles.wrapper}>
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={onSubmit}>
         <h2 className="text text_type_main-large">Восстановление пароля</h2>
         <EmailInput
           type="email"
@@ -30,10 +32,9 @@ export const PasswordForgot = () => {
           placeholder="Укажите e-mail"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          ref={inputRef}
         ></EmailInput>
         <Button
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           extraClass={`${styles.button} text text_type_main-default`}
           onClick={onSubmit}

@@ -1,69 +1,63 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { BASE_URL } from "../../utils/constants"
-import axios from "axios"
-import { checkResponse, setCookie, getCookie, getCookies } from "../../utils/api"
+import { setCookie, handleApiResponse, axiosApi } from "../../utils/api"
+
+export const createUser = createAsyncThunk("user/createUser", async ({ name, email, password }) => {
+  const res = await axiosApi.post("auth/register", {
+    email: email,
+    password: password,
+    name: name
+  })
+  const data = handleApiResponse(res)
+  const expirationTime = 20 * 60 * 1000
+  setCookie("accessToken", data.accessToken, expirationTime)
+  localStorage.setItem("refreshToken", data.refreshToken)
+  return data
+})
 
 export const loginRequest = createAsyncThunk("auth/authorization", async ({ email, password }) => {
-  const response = await fetch(`${BASE_URL}/auth/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      email: email,
-      password: password
-    })
+  const res = await axiosApi.post("/auth/login", {
+    email: email,
+    password: password
   })
-
-  const data = await checkResponse(response)
+  const data = await handleApiResponse(res)
   const expirationTime = 20 * 60 * 1000
   setCookie("accessToken", data.accessToken, expirationTime)
   localStorage.setItem("refreshToken", data.refreshToken)
   return data
 })
 
-export const accessTokenRequest = async () => {
+export const getUser = createAsyncThunk("auth/getUser", async () => {
+  const res = await axiosApi.get("/auth/user")
+  const data = handleApiResponse(res)
+  return data
+})
+
+export const changeUser = createAsyncThunk("auth/changeUser", async ({ name, email, password }) => {
+  const res = await axiosApi.patch("/auth/user", {
+    name: name,
+    email: email,
+    password: password
+  })
+  const data = handleApiResponse(res)
+  return data
+})
+
+export const logout = createAsyncThunk("auth/logout", async () => {
   const refreshToken = localStorage.getItem("refreshToken")
-  if (!refreshToken) return
-  const response = await fetch(`${BASE_URL}/auth/token`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      token: refreshToken
-    })
-  })
-  const data = await checkResponse(response)
-  const expirationTime = 20 * 60 * 1000
-  setCookie("accessToken", data.accessToken, expirationTime)
-  localStorage.setItem("refreshToken", data.refreshToken)
-  return data.success
-}
-
-export const getUser = createAsyncThunk("auth/getUsers", async () => {
-  const response = await fetch(`${BASE_URL}/auth/user`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-      authorization: getCookie("accessToken")
-    }
-  })
-  const data = await checkResponse(response)
+  const res = await axiosApi.post("/auth/logout", { token: refreshToken })
+  const data = handleApiResponse(res)
   return data
 })
 
-export const checkAuth = () => {
-  return async (dispatch) => {
-    try {
-      const res = await dispatch(getUser())
-      if (!res.payload.success) {
-        await dispatch(accessTokenRequest())
-        await dispatch(getUser())
-      }
-    } catch (error) {
-      console.log("Check-auth: User unauthorized")
-    }
+export const checkAuth = () => async (dispatch) => {
+  const refreshToken = localStorage.getItem("refreshToken")
+  if (!refreshToken) {
+    return console.log("Check-auth: User unauthorized")
+  }
+  try {
+    await dispatch(getUser())
+  } catch (error) {
+    console.log("Check-auth: User unauthorized")
   }
 }
 
@@ -89,6 +83,15 @@ const userSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
+    builder.addCase(createUser.fulfilled, (state, action) => {
+      state.isAuth = true
+      state.email = action.payload.user.email
+      state.name = action.payload.user.name
+    })
+    builder.addCase(createUser.rejected, (state, action) => {
+      state.isAuth = false
+      throw action.error
+    })
     builder.addCase(loginRequest.fulfilled, (state, action) => {
       state.isAuth = true
       state.email = action.payload.user.email
@@ -108,18 +111,17 @@ const userSlice = createSlice({
       state.isAuth = false
       throw action.error
     })
+    builder.addCase(logout.fulfilled, (state, action) => {
+      userSlice.caseReducers.resetUser(state)
+    })
+    builder.addCase(logout.rejected, (state, action) => {
+      throw action.error
+    })
+    builder.addCase(changeUser.rejected, (state, action) => {
+      throw action.error
+    })
   }
 })
 
 export const { setUser, resetUser } = userSlice.actions
 export default userSlice.reducer
-
-// {
-//   "success": true,
-//   "accessToken": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1M2E5ZDJkNTJiNGNmMDAxZDg2ZGE5MyIsImlhdCI6MTcwMDMyNTA3NCwiZXhwIjoxNzAwMzI2Mjc0fQ.tlgK90O0_mfuMUP-P-99-dvgTMUcoriAShPvdaISmDU",
-//   "refreshToken": "8a860fb25e83cace8b073bfa885d5d75e34bb94226935c9a33cc1f1d7746079947eee8678e4d5490",
-//   "user": {
-//       "email": "saxmail72@mail.ru",
-//       "name": "Axel"
-//   }
-// }

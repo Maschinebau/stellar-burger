@@ -5,7 +5,7 @@ import { NavLink, useMatch } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { Routes, Route } from "react-router-dom"
 import { useAuth } from '../components/hooks/useAuth'
-import { resetUser } from '../store/slices/userSlice'
+import { logout } from '../store/slices/userSlice'
 import { useDispatch } from "react-redux"
 
 export const Profile = () => {
@@ -13,7 +13,7 @@ export const Profile = () => {
   const dispatch = useDispatch()
 
   const onExit = () => {
-    dispatch(resetUser())
+    dispatch(logout())
   }
 
 

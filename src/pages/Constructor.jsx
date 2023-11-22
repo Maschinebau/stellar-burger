@@ -1,10 +1,8 @@
 import styles from "./pages.module.css"
 import { BurgerConstructor } from "../components/burger-constructor/burger-constructor"
 import { BurgerIngredients } from "../components/burger-Ingredients/burger-Ingredients"
-import { BASE_URL } from "../utils/constants"
 import { useEffect, useCallback } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { fetchIngredients } from "../store/slices/ingredientsSlice"
 import { DragDropContext } from "react-beautiful-dnd"
 import { addToConstructor, removeFromConstructor, updateMains } from "../store/slices/constructorSlice"
 
@@ -12,10 +10,6 @@ export const Constructor = () => {
   const ingredients = useSelector((state) => state.ingredients.ingredients)
   const orderedIngredients = useSelector((state) => state.burgerConstructor.mains)
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(fetchIngredients(`${BASE_URL}/ingredients`))
-  }, [dispatch])
 
   const handleDragEnd = useCallback(
     ({ draggableId, source, destination }) => {

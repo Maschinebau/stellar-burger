@@ -1,23 +1,31 @@
 import styles from "./authorization.module.css"
 import { Input, Button, PasswordInput, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components"
 import { Link, useNavigate } from "react-router-dom"
-import { createUser } from "../../utils/api"
 import { useState } from "react"
+import { createUser } from "../../store/slices/userSlice"
+import { useSelector, useDispatch } from "react-redux"
 
 export const Registration = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const onButtonClick = () => {
-    createUser(name, email, password)
-    navigate("/login/")
+  const onSubmit = async (e) => {
+    e.preventDefault()
+    const res = await dispatch(createUser({ name, email, password }))
+    if (res.status !== 200) {
+      console.log(res)
+      navigate("/", { replace: true })
+    } else {
+      console.log("Ошибка при регистрации")
+    }
   }
 
   return (
     <div className={styles.wrapper}>
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={onSubmit}>
         <h2 className="text text_type_main-large">Регистрация</h2>
         <Input
           type="text"
@@ -39,12 +47,7 @@ export const Registration = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         ></PasswordInput>
-        <Button
-          htmlType="button"
-          type="primary"
-          extraClass={`${styles.button} text text_type_main-default`}
-          onClick={onButtonClick}
-        >
+        <Button htmlType="submit" type="primary" extraClass={`${styles.button} text text_type_main-default`}>
           Зарегистрироваться
         </Button>
       </form>
