@@ -9,7 +9,7 @@ import constructorReducer from "./store/slices/constructorSlice"
 import orderReducer from "./store/slices/orderSlice"
 import currentIngredientReducer from "./store/slices/currentIngredientSlice"
 import userReducer from './store/slices/userSlice'
-import { rowserRouter as Router } from "react-router-dom"
+import { BrowserRouter as Router } from "react-router-dom"
 
 export const store = configureStore({
   reducer: {

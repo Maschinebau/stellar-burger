@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from "react-router-dom"
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom"
 import {} from "../account/Account"
 import { Constructor, Profile, Layout, Login, Register, ForgotPassword, ResetPassword } from "../../pages"
 import { RequireAuth } from "../hoc/RequireAuth"
