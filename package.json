@@ -1,6 +1,7 @@
 {
   "name": "react-burger-starter",
   "version": "0.1.0",
+  "homepage": ".",
   "private": false,
   "dependencies": {
     "@ya.praktikum/react-developer-burger-ui-components": "^1.14.0",

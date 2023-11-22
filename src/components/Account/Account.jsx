@@ -10,8 +10,9 @@ export const Account = () => {
   const { isAuth, email, name } = useAuth()
   const [username, setUsername] = useState(name)
   const [login, setLogin] = useState(email)
-  const [password, setPassword] = useState('******')
+  const [password, setPassword] = useState('')
   const [isFormChanged, setIsFormChanged] = useState(false)
+
   const dispatch = useDispatch()
 
   const onSubmit = async (e) => {
@@ -28,7 +29,6 @@ export const Account = () => {
 
   const handleInputChange = () => {
     setIsFormChanged(true)
-    setPassword('')
   }
 
   return (
