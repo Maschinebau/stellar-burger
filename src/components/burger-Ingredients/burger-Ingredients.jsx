@@ -37,9 +37,16 @@ export function BurgerIngredients() {
   }, [])
 
   useEffect(() => {
-    ingredientsContainerRef.current.addEventListener("scroll", handleScroll)
+    const container = ingredientsContainerRef.current
+
+    if (container) {
+      container.addEventListener("scroll", handleScroll)
+    }
+
     return () => {
-      ingredientsContainerRef.current.removeEventListener("scroll", handleScroll)
+      if (container) {
+        container.removeEventListener("scroll", handleScroll)
+      }
     }
   }, [handleScroll])
 
@@ -67,4 +74,3 @@ export function BurgerIngredients() {
 }
 
 export default memo(BurgerIngredients)
-

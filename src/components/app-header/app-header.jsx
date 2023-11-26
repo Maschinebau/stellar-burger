@@ -1,22 +1,33 @@
-import styles from './app-header.module.css'
-import { BurgerIcon, ListIcon, Logo, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { NavItem } from './nav-item/nav-item';
+import styles from "./app-header.module.css"
+import { BurgerIcon, ListIcon, Logo, ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components"
+import { NavItem } from "./nav-item/nav-item"
+import { useAuth } from '../hooks/useAuth'
 
-export function AppHeader () {
+export function AppHeader() {
+  const { isAuth, email, name } = useAuth()
+
   return (
     <header className={`${styles.header} text`}>
       <nav className={styles.navbar}>
         <ul className={styles.list}>
           <li className={styles.item}>
-            <NavItem isActive={true} IconComponent={BurgerIcon} >Конструктор</NavItem>
+            <NavItem IconComponent={BurgerIcon} url="/">
+              Конструктор
+            </NavItem>
           </li>
           <li className={styles.item}>
-            <NavItem isActive={false} IconComponent={ListIcon} >Лента заказов</NavItem>
+            <NavItem IconComponent={ListIcon} url="ingredients">
+              Лента заказов
+            </NavItem>
           </li>
         </ul>
-        <div className={styles.logo}><Logo/></div>
-        <NavItem isActive={false} IconComponent={ProfileIcon} >Личный кабинет</NavItem>
+        <div className={styles.logo}>
+          <Logo />
+        </div>
+        <NavItem IconComponent={ProfileIcon} url="profile">
+          {isAuth ? name : 'Личный кабинет'}
+        </NavItem>
       </nav>
-    </header> 
+    </header>
   )
 }

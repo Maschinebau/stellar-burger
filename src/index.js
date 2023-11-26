@@ -6,25 +6,29 @@ import { Provider } from "react-redux"
 import thunk from "redux-thunk"
 import ingredientsReducer from "./store/slices/ingredientsSlice"
 import constructorReducer from "./store/slices/constructorSlice"
-import orderReducer from './store/slices/orderSlice'
-import currentIngredientReducer from './store/slices/currentIngredientSlice'
-
+import orderReducer from "./store/slices/orderSlice"
+import currentIngredientReducer from "./store/slices/currentIngredientSlice"
+import userReducer from './store/slices/userSlice'
+import { BrowserRouter as Router } from "react-router-dom"
 
 export const store = configureStore({
   reducer: {
     ingredients: ingredientsReducer,
     currentIngredient: currentIngredientReducer,
     burgerConstructor: constructorReducer,
-    order: orderReducer
+    order: orderReducer,
+    user: userReducer
   },
   devTools: true,
   middleware: [thunk]
 })
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <Router>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </Router>,
   document.getElementById("root")
 )
 

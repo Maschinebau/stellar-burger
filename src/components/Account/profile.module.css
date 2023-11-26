@@ -1,0 +1,37 @@
+.account {
+
+}
+
+.wrapper {
+  display: flex;
+  column-gap: 60px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+}
+
+.text {
+  max-width: 320px;
+
+}
+
+.buttons {
+  align-self: flex-end;
+}
+
+
+.submitButton {
+  margin-left: 50px;
+  width: 150px;
+  height: 60px;
+}
+
+.resetButton {
+  background-color: inherit;
+  color: white;
+  border: 0;
+  cursor: pointer;
+}

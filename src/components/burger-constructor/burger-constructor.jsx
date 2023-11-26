@@ -10,6 +10,8 @@ import { useSelector, useDispatch } from "react-redux"
 import { Droppable, Draggable } from "react-beautiful-dnd"
 import { removeFromConstructor, updateMains, updateBuns } from "../../store/slices/constructorSlice"
 import { postOrder } from "../../store/slices/orderSlice"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "../hooks/useAuth"
 
 export function BurgerConstructor() {
   const [modalOpened, setModalOpen] = useState(false)
@@ -19,6 +21,8 @@ export function BurgerConstructor() {
   const allOrderedIngredients = useMemo(() => [...orderedBuns, ...orderedMains], [orderedBuns, orderedMains])
   const dispatch = useDispatch()
   const ids = allOrderedIngredients.map((ingredient) => ingredient._id)
+  const navigate = useNavigate()
+  const { isAuth } = useAuth()
 
   const totalPrice = useMemo(() => {
     return allOrderedIngredients.reduce((sum, item) => sum + item.price, 0)
@@ -29,10 +33,13 @@ export function BurgerConstructor() {
   }
 
   const handleOrderCreate = () => {
-    setModalOpen(true)
-    dispatch(postOrder(ids))
-    dispatch(updateMains([]))
-    dispatch(updateBuns([]))
+    if(!isAuth) navigate('/login')
+    if(isAuth) {
+      setModalOpen(true)
+      dispatch(postOrder(ids))
+      dispatch(updateMains([]))
+      dispatch(updateBuns([]))
+    }
   }
 
   const orderNumber = useSelector((state) => state.order.orderNumber)

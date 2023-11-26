@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { BASE_URL } from "../../utils/constants"
-import { checkResponse } from "../../utils/constants"
+import { checkResponse } from "../../utils/api"
 
 export const postOrder = createAsyncThunk("order/postOrder", async (ids) => {
   const response = await fetch(`${BASE_URL}/orders`, {
@@ -11,10 +11,10 @@ export const postOrder = createAsyncThunk("order/postOrder", async (ids) => {
     body: JSON.stringify({
       ingredients: ids
     })
-  });
-  const data = await checkResponse(response);
-  return data;
-});
+  })
+  const data = await checkResponse(response)
+  return data
+})
 
 const orderSlice = createSlice({
   name: "order",

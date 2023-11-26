@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { data } from "../../utils/data"
-import { checkResponse } from "../../utils/constants"
+import { checkResponse } from "../../utils/api"
 import { v4 as uuid } from "uuid"
 
 export const fetchIngredients = createAsyncThunk("ingredients/fetchIngredients", async (url) => {
@@ -37,7 +37,7 @@ const ingredientsSlice = createSlice({
       .addCase(fetchIngredients.rejected, (state, action) => {
         state.loading = false
         state.error = action.error.message
-        state.ingredients = data
+        state.ingredients = data.map((ingredient) => ({ ...ingredient, dragId: uuid() }))
       })
   }
 })
