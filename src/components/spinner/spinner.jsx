@@ -1,8 +1,9 @@
-import styles from './spinner.module.css'
+import styles from "./spinner.module.css"
 
-export const Spinner = () => {
-
+export const Spinner = ({ extraClass }) => {
   return (
-    <span className={styles.spinner}></span>
+    <div className={extraClass}>
+      <span className={styles.spinner}></span>
+    </div>
   )
 }

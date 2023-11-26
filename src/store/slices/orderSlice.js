@@ -1,12 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { BASE_URL } from "../../utils/constants"
-import { checkResponse } from "../../utils/api"
+import { checkResponse, getCookie } from "../../utils/api"
+
 
 export const postOrder = createAsyncThunk("order/postOrder", async (ids) => {
+  const accessToken = getCookie("accessToken")
   const response = await fetch(`${BASE_URL}/orders`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      Authorization: accessToken,
     },
     body: JSON.stringify({
       ingredients: ids

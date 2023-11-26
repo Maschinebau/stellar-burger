@@ -12,6 +12,7 @@ import { removeFromConstructor, updateMains, updateBuns } from "../../store/slic
 import { postOrder } from "../../store/slices/orderSlice"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
+import { Spinner } from "../spinner/spinner"
 
 export function BurgerConstructor() {
   const [modalOpened, setModalOpen] = useState(false)
@@ -154,7 +155,7 @@ export function BurgerConstructor() {
                 {orderNumber ? (
                   <OrderDetails orderNumber={orderNumber} />
                 ) : (
-                  <div className={styles.loading}></div>
+                  <Spinner extraClass={styles.burgerSpinner}/>
                 )}
               </Modal>
             )}

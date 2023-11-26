@@ -1,6 +1,9 @@
 .order {
-  padding: 24px;
   max-width: 750px;
+}
+
+.link {
+  padding: 24px;
   display: flex;
   flex-direction: column;
   row-gap: 24px;
@@ -25,6 +28,7 @@
   display: flex;
   justify-content: space-between;
   max-width: 440px;
+  column-gap: 5px;
 }
 
 .summary {
@@ -43,9 +47,17 @@
     border: 2px solid #7e0eb6;
     box-shadow: 0 0 10px #7e0eb6;
   }
+  25% {
+    border: 2px solid #ff4cedbf;
+    box-shadow: 0 0 10px #ff4ceda6;
+  }
   50% {
     border: 2px solid #ff4cedbf;
     box-shadow: 0 0 10px #ff4ceda6;
+  }
+  75% {
+    border: 2px solid #7e0eb6;
+    box-shadow: 0 0 10px #7e0eb6;
   }
   100% {
     border: 2px solid #7e0eb6;
@@ -68,4 +80,8 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
+}
+
+.textGreen {
+  color: green;
 }

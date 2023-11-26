@@ -10,7 +10,7 @@ import {
   Feed
 } from "../../pages"
 import { RequireAuth } from "../hoc/RequireAuth"
-import { useEffect } from "react"
+import { useCallback, useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { checkAuth } from "../../store/slices/userSlice"
 import { IngredientDetails } from "../popups/IngredientDetails"
@@ -27,15 +27,12 @@ function App() {
   const navigate = useNavigate()
   const background = location.state && location.state.background
 
-  const handleModalClose = () => {
+  const handleModalClose = useCallback(() => {
     navigate(-1)
-  }
+  }, [navigate])
 
   useEffect(() => {
     dispatch(checkAuth())
-  }, [dispatch])
-
-  useEffect(() => {
     dispatch(fetchIngredients(`${BASE_URL}/ingredients`))
   }, [dispatch])
 
@@ -45,7 +42,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Constructor />} />
           <Route
-            path="profile/"
+            path="profile/*"
             element={
               <RequireAuth>
                 <Profile />
@@ -55,6 +52,15 @@ function App() {
             <Route exact index element={<Account />} />
             <Route path="orders" element={<OrdersHistory />} />
           </Route>
+          <Route
+            path="profile/orders/:id"
+            element={
+              <RequireAuth>
+                <OrderInfo />
+              </RequireAuth>
+            }
+            state={{ background: false }}
+          />
           <Route path="login/">
             <Route index element={<Login />} />
             <Route path="register" element={<Register />} />
@@ -62,9 +68,8 @@ function App() {
             <Route path="reset-password" element={<ResetPassword />} />
           </Route>
           <Route path="/ingredients/:id" element={<IngredientDetails />} state={{ background: false }} />
-          <Route path="/feed" element={<Feed />}/>
+          <Route path="/feed" element={<Feed />} />
           <Route path="feed/:id" element={<OrderInfo />} state={{ background: false }} />
-          <Route path="profile/orders/:id" element={<OrderInfo />} state={{ background: false }} />
         </Route>
       </Routes>
       {background && (

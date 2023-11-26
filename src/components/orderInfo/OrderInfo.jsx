@@ -1,6 +1,6 @@
 import styles from "../orderInfo/orderInfo.module.css"
 import { CurrencyIcon, FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components"
-import { useEffect, useMemo } from "react"
+import { useEffect, memo } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useLocation, useParams } from "react-router-dom"
 import { getOrders } from "../../store/slices/allOrdersSlise"
@@ -8,7 +8,7 @@ import { Spinner } from "../spinner/spinner"
 import { fetchIngredients } from "../../store/slices/ingredientsSlice"
 import { BASE_URL } from "../../utils/constants"
 
-export const OrderInfo = () => {
+export const OrderInfo = memo(() => {
   const { id } = useParams()
   const location = useLocation()
   const dispatch = useDispatch()
@@ -56,7 +56,7 @@ export const OrderInfo = () => {
           <h1 className="text_type_main-medium pb-3">{currentOrder.name}</h1>
           {currentOrder.status &&
             (currentOrder.status === "done" ? (
-              <p className="text text_type_main-default pb-15" style={{ color: "green" }}>
+              <p className={`text text_type_main-default pb-15 ${styles.ready}`}>
                 выполнен
               </p>
             ) : (
@@ -109,4 +109,4 @@ export const OrderInfo = () => {
       )}
     </section>
   )
-}
+})
