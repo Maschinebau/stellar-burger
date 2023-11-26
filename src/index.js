@@ -8,8 +8,9 @@ import ingredientsReducer from "./store/slices/ingredientsSlice"
 import constructorReducer from "./store/slices/constructorSlice"
 import orderReducer from "./store/slices/orderSlice"
 import currentIngredientReducer from "./store/slices/currentIngredientSlice"
-import userReducer from './store/slices/userSlice'
-import { BrowserRouter as Router } from "react-router-dom"
+import userReducer from "./store/slices/userSlice"
+import { HashRouter } from "react-router-dom"
+import allOrdersReducer from "./store/slices/allOrdersSlise"
 
 export const store = configureStore({
   reducer: {
@@ -17,18 +18,19 @@ export const store = configureStore({
     currentIngredient: currentIngredientReducer,
     burgerConstructor: constructorReducer,
     order: orderReducer,
-    user: userReducer
+    user: userReducer,
+    allOrders: allOrdersReducer,
   },
   devTools: true,
   middleware: [thunk]
 })
 
 ReactDOM.render(
-  <Router>
+  <HashRouter basename="/">
     <Provider store={store}>
       <App />
     </Provider>
-  </Router>,
+  </HashRouter>,
   document.getElementById("root")
 )
 

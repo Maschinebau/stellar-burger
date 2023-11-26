@@ -1,6 +1,14 @@
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom"
-import {} from "../account/Account"
-import { Constructor, Profile, Layout, Login, Register, ForgotPassword, ResetPassword } from "../../pages"
+import {
+  Constructor,
+  Profile,
+  Layout,
+  Login,
+  Register,
+  ForgotPassword,
+  ResetPassword,
+  Feed
+} from "../../pages"
 import { RequireAuth } from "../hoc/RequireAuth"
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
@@ -9,6 +17,9 @@ import { IngredientDetails } from "../popups/IngredientDetails"
 import { Modal } from "../modal/modal"
 import { fetchIngredients } from "../../store/slices/ingredientsSlice"
 import { BASE_URL } from "../../utils/constants"
+import { OrderInfo } from "../orderInfo/OrderInfo"
+import { Account } from "../account/Account"
+import { OrdersHistory } from "../orders-history/ordersHistory"
 
 function App() {
   const dispatch = useDispatch()
@@ -32,26 +43,28 @@ function App() {
     <>
       <Routes location={background || location}>
         <Route path="/" element={<Layout />}>
-          <Route path="/" element={<Constructor />} />
+          <Route index element={<Constructor />} />
           <Route
-            path="profile/*"
+            path="profile/"
             element={
               <RequireAuth>
                 <Profile />
               </RequireAuth>
             }
-          />
+          >
+            <Route exact index element={<Account />} />
+            <Route path="orders" element={<OrdersHistory />} />
+          </Route>
           <Route path="login/">
             <Route index element={<Login />} />
             <Route path="register" element={<Register />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="reset-password" element={<ResetPassword />} />
           </Route>
-          <Route
-            path="/ingredients/:id"
-            element={<IngredientDetails />}
-            state={{ background: false }}
-          ></Route>
+          <Route path="/ingredients/:id" element={<IngredientDetails />} state={{ background: false }} />
+          <Route path="/feed" element={<Feed />}/>
+          <Route path="feed/:id" element={<OrderInfo />} state={{ background: false }} />
+          <Route path="profile/orders/:id" element={<OrderInfo />} state={{ background: false }} />
         </Route>
       </Routes>
       {background && (
@@ -61,6 +74,22 @@ function App() {
             element={
               <Modal onClose={handleModalClose}>
                 <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path="/profile/orders/:id"
+            element={
+              <Modal onClose={handleModalClose}>
+                <OrderInfo />
+              </Modal>
+            }
+          />
+          <Route
+            path="/feed/:id"
+            element={
+              <Modal onClose={handleModalClose}>
+                <OrderInfo />
               </Modal>
             }
           />

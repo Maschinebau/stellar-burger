@@ -11,7 +11,7 @@
 }
 
 .navbar {
-  max-width: 1240px;
+  width: 1240px;
   padding: 16px 0;
   margin: 0 auto;
   display: flex;

@@ -1,10 +1,10 @@
-import React, { useEffect, useState, memo, useCallback, useMemo } from "react"
+import {  useState, memo, useMemo } from "react"
 import styles from "./burger-constructor.module.css"
-import { Button, CurrencyIcon, ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components"
+import { Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components"
 import { BurgerComponent } from "./burger-component/burger-component"
 import { Modal } from "../modal/modal"
 import { OrderDetails } from "../popups/OrderDetails"
-import { ingredientPropType } from "../../utils/prop-types"
+// import { ingredientPropType } from "../../utils/prop-types"
 // import PropTypes from "prop-types"
 import { useSelector, useDispatch } from "react-redux"
 import { Droppable, Draggable } from "react-beautiful-dnd"
@@ -71,7 +71,7 @@ export function BurgerConstructor() {
                 price={orderedBun.price}
               />
             ) : (
-              <div className={`${styles.top} ${styles.placeholder} mr-10 mb-4`}>
+              <div className={`${styles.top} ${styles.placeholder}`}>
                 <p className="text_type_main-default">Перетащите сюда вашу булку</p>
               </div>
             )}
@@ -113,7 +113,7 @@ export function BurgerConstructor() {
                 )}
               </Droppable>
             ) : (
-              <div className={`${styles.middle} ${styles.placeholder} mr-3`}>
+              <div className={`${styles.middle} ${styles.placeholder}`}>
                 <p className="text_type_main-default">Перетащите сюда ингредиенты</p>
               </div>
             )}
@@ -128,7 +128,7 @@ export function BurgerConstructor() {
                 price={orderedBun.price}
               />
             ) : (
-              <div className={`${styles.bottom} ${styles.placeholder} mr-10 mb-4`}>
+              <div className={`${styles.bottom} ${styles.placeholder}`}>
                 <p className="text_type_main-default">Перетащите сюда вашу булку</p>
               </div>
             )}

@@ -1,4 +1,4 @@
-@import-normalize;
+
 
 .app {
   display: flex;
@@ -6,6 +6,7 @@
   background-color: #131316;
   color: #f2f2f3;
   height: 100vh;
+  
 }
 
 .main {
