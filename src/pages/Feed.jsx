@@ -17,7 +17,7 @@ export const Feed = () => {
 
   return (
     <section className={styles.feed}>
-      {orders ? (
+      {orders && ordersTotal && ordersToday ? (
         <>
           <div className={styles.orders}>
             <p className="text text_type_main-large">Лента заказов</p>
