@@ -2,8 +2,10 @@ import axios from "axios"
 
 export const axiosApi = axios.create({
   baseURL: "https://norma.nomoreparties.space/api",
-  refresh_token_url: "https://norma.nomoreparties.space/api/auth/token"
+  refresh_token_url: "https://norma.nomoreparties.space/api/auth/token",
 })
+
+axiosApi.defaults.headers.common["Content-Type"] = "application/json";
 
 export const accessTokenRefresh = async () => {
   const refreshToken = localStorage.getItem("refreshToken")

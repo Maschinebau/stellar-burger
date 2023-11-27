@@ -16,7 +16,7 @@ export function AppHeader() {
             </NavItem>
           </li>
           <li className={styles.item}>
-            <NavItem IconComponent={ListIcon} url="ingredients">
+            <NavItem IconComponent={ListIcon} url="feed">
               Лента заказов
             </NavItem>
           </li>

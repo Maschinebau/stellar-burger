@@ -22,10 +22,10 @@ export function IngredientDetails() {
   }, [dispatch])
 
   return (
-    <div className={`${styles.wrapper} ${!background && styles.wrapperPage}`}>
+    <section className={`${styles.wrapper} ${!background && styles.wrapperPage}`}>
       {ingredient ? (
         <>
-          <p className={`${styles.title} text text_type_main-large pt-3`}>Детали ингридиента</p>
+          <p className={`${styles.title} text text_type_main-large pt-3`}>Детали ингредиента</p>
           <img
             className={`${styles.picture} mb-4`}
             src={ingredient.image_large}
@@ -57,7 +57,7 @@ export function IngredientDetails() {
       ) : (
         <Spinner />
       )}
-    </div>
+    </section>
   )
 }
 

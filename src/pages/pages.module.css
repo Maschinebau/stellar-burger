@@ -1,3 +1,15 @@
+p,
+li,
+ul {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: inherit;
+  list-style: none;
+}
+
 .app {
   display: flex;
   flex-direction: column;
@@ -23,7 +35,7 @@
 
 .profile {
   padding-top: 120px;
-  width: 1171px;
+  width: 1240px;
   margin: 0 auto;
   display: flex;
   column-gap: 60px;
@@ -47,14 +59,76 @@
   color: white;
 }
 
-.activeNav {
+.active {
   color: white;
 }
 
 .text {
   padding-top: 80px;
+  opacity: .7;
 }
 
-.IngredientInfo p:first-child {
-  align-self: center;
+.feed {
+  padding-top: 40px;
+  width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  column-gap: 60px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.orders {
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+  row-gap: 20px;
+
+}
+
+.ordersFeed {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  max-height: calc(100vh - 200px);
+  overflow-y: scroll;
+  padding-right: 10px;
+}
+
+.info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 60px;
+  align-items: flex-start;
+  padding-top: 60px;
+}
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  column-gap: 36px;
+  max-height: 150px;
+
+}
+
+.ready {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-auto-flow: dense;
+  column-gap: 16px;
+}
+
+.status {
+  display: flex;
+  flex-direction: column;
+  width: 270px;
+  row-gap: 24px;
+}
+
+.textLarge {
+  text-shadow:
+    0 0 16px rgba(51, 51, 255, 0.25),
+    0 0 8px rgba(51, 51, 255, 0.25),
+    0 4px 32px rgba(51, 51, 255, 0.5);
 }

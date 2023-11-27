@@ -16,12 +16,10 @@ export function IngredientItem({ ingredient }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
-  const ingredientId = ingredient["_id"]
 
   const onClick = () => {
     setIsClicked(true)
     dispatch(setCurrentIngredient(ingredient))
-    // navigate(`/ingredients/${ingredient._id}`, { state: { background: true } })
   }
 
   const count = useMemo(() => {
@@ -32,8 +30,8 @@ export function IngredientItem({ ingredient }) {
   return (
     <>
       <Link
-        key={ingredientId}
-        to={`/ingredients/${ingredientId}`}
+        key={ingredient._id}
+        to={`/ingredients/${ingredient._id}`}
         state={{ background: location }}
         className={styles.link}
       >

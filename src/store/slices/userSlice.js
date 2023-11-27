@@ -61,12 +61,21 @@ export const checkAuth = () => async (dispatch) => {
   }
 }
 
+export const fetchUserOrders = createAsyncThunk("orders/fetchUserOrders", async () => {
+  const response = await axiosApi.get("/orders/all")
+  const data = handleApiResponse(response)
+  return data
+})
+
+
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
     isAuth: false,
     email: null,
-    name: null
+    name: null,
+    userOrders: []
   },
   reducers: {
     setUser(state, action) {
@@ -118,6 +127,12 @@ const userSlice = createSlice({
       throw action.error
     })
     builder.addCase(changeUser.rejected, (state, action) => {
+      throw action.error
+    })
+    builder.addCase(fetchUserOrders.fulfilled, (state, action) => {
+      state.userOrders = action.payload.orders
+    })
+    builder.addCase(fetchUserOrders.rejected, (state, action) => {
       throw action.error
     })
   }

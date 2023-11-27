@@ -8,7 +8,7 @@ export function NavItem(props) {
   
   const match = useMatch({
     path: url,
-    end: url.length === 1
+    end: true
   })
 
   useEffect(() => {

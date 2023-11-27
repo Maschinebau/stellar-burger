@@ -1,58 +1,57 @@
-import { Account } from "../components/account/Account"
-import { OrdersHistory } from "../components/orders-history/ordersHistory"
 import styles from "./pages.module.css"
-import { NavLink, useMatch } from "react-router-dom"
-import { useState, useEffect } from "react"
-import { Routes, Route } from "react-router-dom"
-import { useAuth } from '../components/hooks/useAuth'
-import { logout } from '../store/slices/userSlice'
+import { NavLink, useLocation, useMatch } from "react-router-dom"
+import { Outlet } from "react-router-dom"
+import { useAuth } from "../components/hooks/useAuth"
+import { logout } from "../store/slices/userSlice"
 import { useDispatch } from "react-redux"
+
 
 export const Profile = () => {
   const { isAuth, email, name } = useAuth()
   const dispatch = useDispatch()
+  const location = useLocation()
 
   const onExit = () => {
     dispatch(logout())
   }
-
 
   return (
     <div className={styles.profile}>
       <nav className={styles.profileNav}>
         <NavLink
           className={({ isActive }) =>
-            `${styles.navItem} text_type_main-medium text_color_inactive ${isActive ? styles.activeNav : ""}`
+            `${styles.navItem} text_type_main-medium  ${isActive ? styles.active : "text_color_inactive"}`
           }
           to="/profile"
+          end
         >
           Профиль
         </NavLink>
         <NavLink
           className={({ isActive }) =>
-            `${styles.navItem} text_type_main-medium text_color_inactive ${isActive ? styles.active : ""}`
+            `${styles.navItem} text_type_main-medium ${isActive ? styles.active : "text_color_inactive"}`
           }
           to="/profile/orders"
+          end
         >
           История заказов
         </NavLink>
         <NavLink
           className={({ isActive }) =>
-            `${styles.navItem} text_type_main-medium text_color_inactive ${isActive ? styles.active : ""}`
+            `${styles.navItem} text_type_main-medium ${isActive ? styles.active : "text_color_inactive"}`
           }
           to="/"
           onClick={() => onExit()}
         >
           Выход
         </NavLink>
-        <p className={`${styles.text} text text_type_main-default text_color_inactive`}>
-          В этом разделе вы можете изменить свои персональные данные
+        <p className={`${styles.profileText} text text_type_main-default text_color_inactive`}>
+          {location.pathname === "/profile"
+            ? "В этом разделе вы можете изменить свои персональные данные"
+            : "В этом разделе вы можете просмотреть свою историю заказов"}
         </p>
       </nav>
-      <Routes>
-        <Route exact path="/" element={<Account />} />
-        <Route path="/orders" element={<OrdersHistory/>} />
-      </Routes>
+          <Outlet />
     </div>
   )
 }

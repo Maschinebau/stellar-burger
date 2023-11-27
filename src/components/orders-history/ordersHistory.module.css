@@ -1,0 +1,9 @@
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+  max-height: calc(100vh - 250px);
+  overflow-y: scroll;
+  padding-right: 15px;
+}
