@@ -4,6 +4,8 @@
   "homepage": ".",
   "private": false,
   "dependencies": {
+    "@types/react-router": "^5.1.20",
+    "@types/react-router-dom": "^5.3.3",
     "@ya.praktikum/react-developer-burger-ui-components": "^1.14.0",
     "axios": "^1.5.1",
     "clsx": "^1.2.1",
@@ -29,8 +31,13 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.10.5",
     "@types/react": "17.0.0",
+    "@types/react-beautiful-dnd": "^13.1.7",
     "@types/react-dom": "17.0.0",
+    "@types/react-redux": "^7.1.33",
+    "@types/uuid": "^9.0.7",
     "babel-loader": "^9.1.3",
     "gh-pages": "^6.0.0",
     "react-dnd": "^14.0.5",
@@ -50,12 +57,6 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [

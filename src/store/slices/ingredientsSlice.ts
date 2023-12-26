@@ -1,13 +1,20 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 import { data } from "../../utils/data"
 import { checkResponse } from "../../utils/api"
 import { v4 as uuid } from "uuid"
+import { TIngredient } from "../../utils/types"
 
-export const fetchIngredients = createAsyncThunk("ingredients/fetchIngredients", async (url) => {
+export const fetchIngredients = createAsyncThunk("ingredients/fetchIngredients", async (url: string) => {
   const response = await fetch(url)
   const result = await checkResponse(response)
   return result.data
 })
+
+type TIngredientsState = {
+  ingredients: TIngredient[]
+  loading: boolean
+  error: string | null | undefined
+}
 
 const ingredientsSlice = createSlice({
   name: "ingredients",
@@ -15,13 +22,13 @@ const ingredientsSlice = createSlice({
     ingredients: [],
     loading: false,
     error: null
-  },
+  } as TIngredientsState,
   reducers: {
-    addIngredient: (state, action) => {
+    addIngredient: (state, action: PayloadAction<TIngredient>) => {
       state.ingredients.push(action.payload)
     },
-    removeIngredient: (state, action) => {
-      return state.filter((ingredient) => ingredient._id !== action.payload)
+    removeIngredient: (state, action: PayloadAction<string>) => {
+      state.ingredients = state.ingredients.filter((ingredient) => ingredient._id !== action.payload)
     }
   },
   extraReducers: (builder) => {
@@ -30,7 +37,7 @@ const ingredientsSlice = createSlice({
         state.loading = true
         state.error = null
       })
-      .addCase(fetchIngredients.fulfilled, (state, action) => {
+      .addCase(fetchIngredients.fulfilled, (state, action: PayloadAction<TIngredient[]>) => {
         state.loading = false
         state.ingredients = action.payload.map((ingredient) => ({ ...ingredient, dragId: uuid() }))
       })

@@ -1,7 +1,9 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { setCookie, handleApiResponse, axiosApi } from "../../utils/api"
+import { TOrder, TUser } from "../../utils/types"
+import { Dispatch } from "redux"
 
-export const createUser = createAsyncThunk("user/createUser", async ({ name, email, password }) => {
+export const createUser = createAsyncThunk("user/createUser", async ({ name, email, password }: TUser) => {
   const res = await axiosApi.post("auth/register", {
     email: email,
     password: password,
@@ -14,7 +16,7 @@ export const createUser = createAsyncThunk("user/createUser", async ({ name, ema
   return data
 })
 
-export const loginRequest = createAsyncThunk("auth/authorization", async ({ email, password }) => {
+export const loginRequest = createAsyncThunk("auth/authorization", async ({ email, password }: TUser) => {
   const res = await axiosApi.post("/auth/login", {
     email: email,
     password: password
@@ -32,7 +34,7 @@ export const getUser = createAsyncThunk("auth/getUser", async () => {
   return data
 })
 
-export const changeUser = createAsyncThunk("auth/changeUser", async ({ name, email, password }) => {
+export const changeUser = createAsyncThunk("auth/changeUser", async ({ name, email, password }: TUser) => {
   const res = await axiosApi.patch("/auth/user", {
     name: name,
     email: email,
@@ -49,7 +51,7 @@ export const logout = createAsyncThunk("auth/logout", async () => {
   return data
 })
 
-export const checkAuth = () => async (dispatch) => {
+export const checkAuth = () => async (dispatch: Dispatch) => {
   const refreshToken = localStorage.getItem("refreshToken")
   if (!refreshToken) {
     return console.log("Check-auth: User unauthorized")
@@ -67,7 +69,12 @@ export const fetchUserOrders = createAsyncThunk("orders/fetchUserOrders", async 
   return data
 })
 
-
+type TUserState = {
+  isAuth: boolean
+  email: string | null
+  name: string | null
+  userOrders: TOrder[]
+}
 
 const userSlice = createSlice({
   name: "user",
@@ -76,9 +83,9 @@ const userSlice = createSlice({
     email: null,
     name: null,
     userOrders: []
-  },
+  } as TUserState,
   reducers: {
-    setUser(state, action) {
+    setUser(state, action: PayloadAction<Omit<TUserState, 'userOrders'>>) {
       state.isAuth = true
       state.email = action.payload.email
       state.name = action.payload.name
@@ -99,7 +106,7 @@ const userSlice = createSlice({
     })
     builder.addCase(createUser.rejected, (state, action) => {
       state.isAuth = false
-      throw action.error
+      console.log(action.error.message)
     })
     builder.addCase(loginRequest.fulfilled, (state, action) => {
       state.isAuth = true
@@ -109,7 +116,7 @@ const userSlice = createSlice({
     builder.addCase(loginRequest.rejected, (state, action) => {
       state.isAuth = false
       console.log("Error occurred during login:", action.error)
-      throw action.error
+      console.log(action.error.message)
     })
     builder.addCase(getUser.fulfilled, (state, action) => {
       state.isAuth = true
@@ -118,22 +125,22 @@ const userSlice = createSlice({
     })
     builder.addCase(getUser.rejected, (state, action) => {
       state.isAuth = false
-      throw action.error
+      console.log(action.error.message)
     })
     builder.addCase(logout.fulfilled, (state, action) => {
       userSlice.caseReducers.resetUser(state)
     })
     builder.addCase(logout.rejected, (state, action) => {
-      throw action.error
+      console.log(action.error.message)
     })
     builder.addCase(changeUser.rejected, (state, action) => {
-      throw action.error
+      console.log(action.error.message)
     })
     builder.addCase(fetchUserOrders.fulfilled, (state, action) => {
       state.userOrders = action.payload.orders
     })
     builder.addCase(fetchUserOrders.rejected, (state, action) => {
-      throw action.error
+      console.log(action.error.message)
     })
   }
 })

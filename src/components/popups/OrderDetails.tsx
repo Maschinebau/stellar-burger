@@ -1,6 +1,10 @@
 import styles from "./popups.module.css"
 
-export function OrderDetails(props) {
+type TOrderDetailsProps = {
+  orderNumber: number
+}
+
+export const OrderDetails = (props: TOrderDetailsProps) => {
   return (
     <div className={styles.wrapper}>
       <p className="text text_type_digits-large mt-20 mb-8">{props.orderNumber}</p>

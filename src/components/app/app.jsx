@@ -18,8 +18,8 @@ import { Modal } from "../modal/modal"
 import { fetchIngredients } from "../../store/slices/ingredientsSlice"
 import { BASE_URL } from "../../utils/constants"
 import { OrderInfo } from "../orderInfo/OrderInfo"
-import { Account } from "../account/Account"
 import { OrdersHistory } from "../orders-history/ordersHistory"
+import { Account } from "../Account/Account"
 
 function App() {
   const dispatch = useDispatch()

@@ -16,6 +16,7 @@ export const Login = () => {
   }, [isAuth, navigate])
 
   const fromPage = location.state?.from?.pathname || "/"
+
   return (
     <main className={styles.loginMain}>
       <SignIn />
