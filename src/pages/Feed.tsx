@@ -4,12 +4,13 @@ import styles from "./pages.module.css"
 import { useDispatch, useSelector } from "react-redux"
 import { Spinner } from "../components/spinner/spinner"
 import { Order } from "../components/order/Order"
+import { RootState } from "../store/rootReducer"
 
 export const Feed = () => {
   const dispatch = useDispatch()
-  const orders = useSelector((state) => state.allOrders.orders)
-  const ordersTotal = useSelector((state) => state.allOrders.total)
-  const ordersToday = useSelector((state) => state.allOrders.totalToday)
+  const orders = useSelector((state: RootState) => state.allOrders.orders)
+  const ordersTotal = useSelector((state: RootState) => state.allOrders.total)
+  const ordersToday = useSelector((state: RootState) => state.allOrders.totalToday)
 
   useEffect(() => {
     dispatch(getOrders())
@@ -23,7 +24,9 @@ export const Feed = () => {
             <p className="text text_type_main-large">Лента заказов</p>
             <ul className={`${styles.ordersFeed} custom-scroll`}>
               {orders ? (
-                orders.map((order) => <Order key={order.number} order={order} link={`/feed/${order._id}`} />)
+                orders.map((order) => (
+                  <Order key={order.number} order={order} statusInfo={false} link={`/feed/${order._id}`} />
+                ))
               ) : (
                 <Spinner />
               )}

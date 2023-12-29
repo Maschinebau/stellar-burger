@@ -1,9 +1,9 @@
 import styles from "./authorization.module.css"
 import { Input, Button, PasswordInput, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components"
 import { Link, useNavigate } from "react-router-dom"
-import { useState } from "react"
+import { FormEvent, useState } from "react"
 import { createUser } from "../../store/slices/userSlice"
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 
 export const Registration = () => {
   const navigate = useNavigate()
@@ -12,14 +12,14 @@ export const Registration = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
     const res = await dispatch(createUser({ name, email, password }))
-    if (res.status !== 200) {
-      console.log(res)
+    if (createUser.fulfilled.match(res)) {
+      console.log("User created successfully")
       navigate("/", { replace: true })
     } else {
-      console.log("Ошибка при регистрации")
+      console.error("Error during registration")
     }
   }
 
@@ -27,22 +27,13 @@ export const Registration = () => {
     <div className={styles.wrapper}>
       <form className={styles.form} onSubmit={onSubmit}>
         <h2 className="text text_type_main-large">Регистрация</h2>
-        <Input
-          type="text"
-          icon="undefined"
-          placeholder="Имя"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        ></Input>
+        <Input type="text" placeholder="Имя" value={name} onChange={(e) => setName(e.target.value)}></Input>
         <EmailInput
-          type="email"
-          icon="undefined"
           placeholder="E-mail"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         ></EmailInput>
         <PasswordInput
-          type="password"
           placeholder="Пароль"
           value={password}
           onChange={(e) => setPassword(e.target.value)}

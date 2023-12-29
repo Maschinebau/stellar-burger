@@ -8,11 +8,12 @@ import { BASE_URL } from "../../utils/constants"
 import { useEffect } from "react"
 import { useLocation } from "react-router-dom"
 import { Spinner } from "../spinner/spinner"
+import { RootState } from "../../store/rootReducer"
 
 export function IngredientDetails() {
   const dispatch = useDispatch()
   const { id } = useParams()
-  const ingredients = useSelector((state) => state.ingredients.ingredients)
+  const ingredients = useSelector((state: RootState) => state.ingredients.ingredients)
   const ingredient = ingredients.find((item) => item._id === id)
   const location = useLocation()
   const background = location.state && location.state.background

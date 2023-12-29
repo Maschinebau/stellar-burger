@@ -1,9 +1,19 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { BASE_URL } from "../../utils/constants"
-import { axiosApi, checkResponse, getCookie, handleApiResponse } from "../../utils/api"
-import { TIngredient, TOrder, TOrderResponse } from "../../utils/types"
+import { axiosApi, handleApiResponse } from "../../utils/api"
+import { TIngredient, TOrder } from "../../utils/types"
 
+type TOrderState = {
+  orderNumber: number | null
+  name: string | null
+  success: boolean | null
+}
 
+export type TOrderResponse = {
+  readonly success: boolean
+  readonly name: string
+  readonly order: TOrder
+}
 
 export const postOrder = createAsyncThunk("order/postOrder", async (ids: Array<TIngredient["_id"]>) => {
   const res = await axiosApi.post(`${BASE_URL}/orders`, {
@@ -12,12 +22,6 @@ export const postOrder = createAsyncThunk("order/postOrder", async (ids: Array<T
   const data = await handleApiResponse(res)
   return data
 })
-
-type TOrderState = {
-  orderNumber: number | null
-  name: string | null
-  success: boolean | null
-}
 
 const orderSlice = createSlice({
   name: "order",

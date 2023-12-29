@@ -7,15 +7,17 @@ import { getOrders } from "../../store/slices/allOrdersSlise"
 import { Spinner } from "../spinner/spinner"
 import { fetchIngredients } from "../../store/slices/ingredientsSlice"
 import { BASE_URL } from "../../utils/constants"
+import { RootState } from "../../store/rootReducer"
+import { TIngredient, TOrder } from "../../utils/types"
 
 export const OrderInfo = memo(() => {
   const { id } = useParams()
   const location = useLocation()
   const dispatch = useDispatch()
   const background = location.state && location.state.background
-  const orders = useSelector((state) => state.allOrders.orders)
-  const currentOrder = orders.find((order) => order._id === id)
-  const ingredients = useSelector((state) => state.ingredients.ingredients)
+  const orders = useSelector((state: RootState) => state.allOrders.orders)
+  const currentOrder = orders.find((order: TOrder) => order._id === id)
+  const ingredients = useSelector((state: RootState) => state.ingredients.ingredients)
 
   useEffect(() => {
     dispatch(getOrders())
@@ -26,18 +28,18 @@ export const OrderInfo = memo(() => {
     return <Spinner />
   }
 
-  const getIngredientField = (ingredientId, field) => {
+  // функция для получения значений из обьекта по ключу
+  const getIngredientField = <K extends keyof TIngredient>(
+    ingredientId: TIngredient["_id"],
+    key: K
+  ): TIngredient[K] | null => {
     const ingredient = ingredients.find((item) => item._id === ingredientId)
-    return ingredient ? ingredient[field] : null
+    return ingredient ? ingredient[key] : null
   }
 
-  const ingredientCount = () => {
-    const countIngredients = (ingredientId) => {
-      const count = currentOrder.ingredients.filter((item) => item === ingredientId)
-      return count.length
-    }
-
-    return countIngredients
+  const ingredientCount = (ingredientId: TIngredient["_id"]) => {
+    const count = currentOrder.ingredients.filter((id) => id === ingredientId)
+    return count.length
   }
 
   const getTotalPrice = () => {
@@ -56,9 +58,7 @@ export const OrderInfo = memo(() => {
           <h1 className="text_type_main-medium pb-3">{currentOrder.name}</h1>
           {currentOrder.status &&
             (currentOrder.status === "done" ? (
-              <p className={`text text_type_main-default pb-15 ${styles.ready}`}>
-                выполнен
-              </p>
+              <p className={`text text_type_main-default pb-15 ${styles.ready}`}>выполнен</p>
             ) : (
               <p className="text text_type_main-default pb-15">готовится</p>
             ))}
@@ -74,7 +74,7 @@ export const OrderInfo = memo(() => {
                       <div className={styles.ingredient}>
                         <img
                           className={styles.img}
-                          src={getIngredientField(ingredientId, "image_mobile")}
+                          src={getIngredientField(ingredientId, "image_mobile") || ""}
                           alt="ингредиент"
                         />
                       </div>
@@ -84,10 +84,12 @@ export const OrderInfo = memo(() => {
                     </div>
 
                     <div className={styles.summary}>
-                      <p className="text text_type_digits-default">{`${ingredientCount(ingredientId)(
-                        ingredientId
-                      )} x ${getIngredientField(ingredientId, "price")}`}</p>
-                      <CurrencyIcon />
+                      <p className="text text_type_digits-default">
+                        {`${ingredientCount(ingredientId)} x ${
+                          getIngredientField(ingredientId, "price") ?? 0
+                        }`}
+                      </p>
+                      <CurrencyIcon type="primary" />
                     </div>
                   </li>
                 ))}
@@ -100,7 +102,7 @@ export const OrderInfo = memo(() => {
             />
             <div className={styles.summary}>
               <p className="text text_type_digits-default">{getTotalPrice()}</p>
-              <CurrencyIcon />
+              <CurrencyIcon type="success" />
             </div>
           </div>
         </>

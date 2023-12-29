@@ -60,6 +60,7 @@ p, h1, h2 {
 
 .ingredientsList {
   padding-bottom: 40px;
+  margin-bottom: 20px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;

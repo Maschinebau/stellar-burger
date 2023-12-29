@@ -1,15 +1,18 @@
 import { useEffect, useRef, useCallback } from "react"
 import { createPortal } from "react-dom"
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components"
-// import { ModalOverlay } from "./modal-overlay/modal-overlay"
-import PropTypes from "prop-types"
 import styles from "./modal.module.css"
 
-export function Modal({ children, onClose }) {
-  const modalOverlayRef = useRef(null)
+type TModal = {
+  children: React.ReactNode
+  onClose: () => void
+}
+
+export function Modal({ children, onClose }: TModal) {
+  const modalOverlayRef = useRef<HTMLDivElement | null>(null)
 
   const handleKeyPress = useCallback(
-    (evt) => {
+    (evt: KeyboardEvent) => {
       if (evt.key === "Escape") {
         onClose()
       }
@@ -18,7 +21,7 @@ export function Modal({ children, onClose }) {
   )
 
   const handleClick = useCallback(
-    (evt) => {
+    (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       if (evt.target === modalOverlayRef.current) {
         onClose()
       }
@@ -38,15 +41,10 @@ export function Modal({ children, onClose }) {
       <div className={styles.wrapper}>
         {children}
         <button className={styles.cross} onClick={onClose}>
-          <CloseIcon />
+          <CloseIcon type='primary'/>
         </button>
       </div>
     </div>,
-    document.getElementById("modals")
+    document.getElementById("modals") as Element
   )
-}
-
-Modal.propTypes = {
-  children: PropTypes.node,
-  onClose: PropTypes.func
 }

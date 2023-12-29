@@ -1,15 +1,12 @@
 import { useState, useMemo, memo, useCallback } from "react"
 import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components"
-import { Modal } from "../../modal/modal"
-import { IngredientDetails } from "../../popups/IngredientDetails"
 import styles from "./ingredient-item.module.css"
-import { ingredientPropType } from "../../../utils/prop-types"
 import { useSelector, useDispatch } from "react-redux"
 import { setCurrentIngredient } from "../../../store/slices/currentIngredientSlice"
 import { useLocation, Link } from "react-router-dom"
 import { TIngredient } from "../../../utils/types"
 import { RootState } from "../../../store/rootReducer"
-import type {} from "redux-thunk/extend-redux";
+import type {} from "redux-thunk/extend-redux"
 
 type TIngredientItemProps = {
   ingredient: TIngredient
@@ -43,7 +40,7 @@ export function IngredientItem({ ingredient }: TIngredientItemProps) {
         <div className={styles.item} onClick={onClick} id={ingredient._id}>
           <img className="pb-2" src={ingredient.image} alt={ingredient.name} loading="lazy" />
           <p className={`${styles.currency} text text_type_digits-default pb-2`}>
-            {ingredient.price} <CurrencyIcon type="primary"/>
+            {ingredient.price} <CurrencyIcon type="primary" />
           </p>
           <p className="text text_type_main-default">{ingredient.name}</p>
           <Counter

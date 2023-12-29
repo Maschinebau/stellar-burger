@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { FormEvent, useState } from "react"
 import {} from "react-router-dom"
 import { Input, PasswordInput, EmailInput, Button } from "@ya.praktikum/react-developer-burger-ui-components"
 import styles from "./profile.module.css"
@@ -8,22 +8,25 @@ import { changeUser } from "../../store/slices/userSlice"
 
 export const Account = () => {
   const { isAuth, email, name } = useAuth()
-  const [username, setUsername] = useState(name)
-  const [login, setLogin] = useState(email)
+  const [username, setUsername] = useState(name || '')
+  const [login, setLogin] = useState(email || '')
   const [password, setPassword] = useState('')
   const [isFormChanged, setIsFormChanged] = useState(false)
 
   const dispatch = useDispatch()
 
-  const onSubmit = async (e) => {
-    e.preventDefault()
-    await dispatch(changeUser({ name: username, email: login, password }))
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (username !== null && login !== null) {
+      await dispatch(changeUser({ name: username, email: login, password }));
+    }
   }
 
   const onReset = () => {
-    setUsername(name)
-    setLogin(email)
-    setPassword(null)
+    setUsername(name || '')
+    setLogin(email || '')
+    setPassword(password)
     setIsFormChanged(false)
   }
 
@@ -45,8 +48,7 @@ export const Account = () => {
           }}
         ></Input>
         <EmailInput
-          type="email"
-          icon="EditIcon"
+
           placeholder="Логин"
           value={login}
           onChange={(e) => {
@@ -55,7 +57,6 @@ export const Account = () => {
           }}
         ></EmailInput>
         <PasswordInput
-          type="password"
           icon="EditIcon"
           placeholder="Пароль"
           value={password}

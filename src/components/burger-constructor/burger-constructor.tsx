@@ -1,11 +1,9 @@
-import {  useState, memo, useMemo } from "react"
+import { useState, memo, useMemo, useCallback } from "react"
 import styles from "./burger-constructor.module.css"
-import { Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components"
+import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components"
 import { BurgerComponent } from "./burger-component/burger-component"
-import { Modal } from "../modal/modal"
+import { Modal } from "../modal/Modal"
 import { OrderDetails } from "../popups/OrderDetails"
-// import { ingredientPropType } from "../../utils/prop-types"
-// import PropTypes from "prop-types"
 import { useSelector, useDispatch } from "react-redux"
 import { Droppable, Draggable } from "react-beautiful-dnd"
 import { removeFromConstructor, updateMains, updateBuns } from "../../store/slices/constructorSlice"
@@ -13,37 +11,48 @@ import { postOrder } from "../../store/slices/orderSlice"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
 import { Spinner } from "../spinner/spinner"
+import { RootState } from "../../store/rootReducer"
+import { TIngredient } from "../../utils/types"
 
 export function BurgerConstructor() {
   const [modalOpened, setModalOpen] = useState(false)
-  const orderedMains = useSelector((state) => state.burgerConstructor.mains)
-  const orderedBuns = useSelector((state) => state.burgerConstructor.buns)
-  const orderedBun = orderedBuns.find((item) => item.type === "bun")
-  const allOrderedIngredients = useMemo(() => [...orderedBuns, ...orderedMains], [orderedBuns, orderedMains])
-  const dispatch = useDispatch()
-  const ids = allOrderedIngredients.map((ingredient) => ingredient._id)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const { isAuth } = useAuth()
+
+  const orderNumber = useSelector((state: RootState) => state.order.orderNumber)
+  const orderedMains = useSelector((state: RootState) => state.burgerConstructor.mains)
+  const orderedBuns = useSelector((state: RootState) => state.burgerConstructor.buns)
+
+  const orderedBun = orderedBuns.find((item) => item.type === "bun")
+
+  //тут все ингредиенты отфильтрованы для удаления лишних значений
+  const allOrderedIngredients = useMemo(
+    () => [orderedBun, ...orderedMains, orderedBun].filter(Boolean) as TIngredient[],
+    [orderedMains, orderedBuns]
+  )
+  const ids = allOrderedIngredients.map((ingredient) => ingredient?._id)
 
   const totalPrice = useMemo(() => {
     return allOrderedIngredients.reduce((sum, item) => sum + item.price, 0)
   }, [allOrderedIngredients])
 
-  const removeIngredient = (ingredientId) => {
-    dispatch(removeFromConstructor(ingredientId))
-  }
+  const removeIngredient = useCallback(
+    (ingredientId: TIngredient["dragId"]) => {
+      dispatch(removeFromConstructor(ingredientId))
+    },
+    [dispatch]
+  )
 
-  const handleOrderCreate = () => {
-    if(!isAuth) navigate('/login')
-    if(isAuth) {
+  const handleOrderCreate = useCallback(() => {
+    if (!isAuth) navigate("/login")
+    if (isAuth) {
       setModalOpen(true)
       dispatch(postOrder(ids))
       dispatch(updateMains([]))
       dispatch(updateBuns([]))
     }
-  }
-
-  const orderNumber = useSelector((state) => state.order.orderNumber)
+  }, [isAuth, navigate, dispatch, ids])
 
   return (
     <Droppable droppableId="constructor" type="ingredients" isCombineEnabled={true}>
@@ -86,13 +95,7 @@ export function BurgerConstructor() {
                     className={`${styles.elements} custom-scroll`}
                   >
                     {orderedMains.map((item, index) => (
-                      <Draggable
-                        key={item.dragId}
-                        draggableId={item.dragId}
-                        index={index}
-                        type="ingredient"
-                        Draggable={true}
-                      >
+                      <Draggable key={item.dragId} draggableId={item.dragId || ""} index={index}>
                         {(provided) => (
                           <li
                             ref={provided.innerRef}
@@ -155,7 +158,7 @@ export function BurgerConstructor() {
                 {orderNumber ? (
                   <OrderDetails orderNumber={orderNumber} />
                 ) : (
-                  <Spinner extraClass={styles.burgerSpinner}/>
+                  <Spinner extraClass={styles.burgerSpinner} />
                 )}
               </Modal>
             )}
@@ -167,7 +170,3 @@ export function BurgerConstructor() {
 }
 
 export default memo(BurgerConstructor)
-
-// BurgerConstructor.propTypes = {
-//   ingredients: PropTypes.arrayOf(ingredientPropType).isRequired
-// }

@@ -14,7 +14,7 @@ import { useCallback, useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { checkAuth } from "../../store/slices/userSlice"
 import { IngredientDetails } from "../popups/IngredientDetails"
-import { Modal } from "../modal/modal"
+import { Modal } from "../modal/Modal"
 import { fetchIngredients } from "../../store/slices/ingredientsSlice"
 import { BASE_URL } from "../../utils/constants"
 import { OrderInfo } from "../orderInfo/OrderInfo"
@@ -49,7 +49,7 @@ function App() {
               </RequireAuth>
             }
           >
-            <Route exact index element={<Account />} />
+            <Route index element={<Account />} />
             <Route path="orders" element={<OrdersHistory />} />
           </Route>
           <Route
@@ -59,7 +59,6 @@ function App() {
                 <OrderInfo />
               </RequireAuth>
             }
-            state={{ background: false }}
           />
           <Route path="login/">
             <Route index element={<Login />} />
@@ -67,9 +66,9 @@ function App() {
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="reset-password" element={<ResetPassword />} />
           </Route>
-          <Route path="/ingredients/:id" element={<IngredientDetails />} state={{ background: false }} />
+          <Route path="/ingredients/:id" element={<IngredientDetails />}  />
           <Route path="/feed" element={<Feed />} />
-          <Route path="feed/:id" element={<OrderInfo />} state={{ background: false }} />
+          <Route path="feed/:id" element={<OrderInfo />}  />
         </Route>
       </Routes>
       {background && (

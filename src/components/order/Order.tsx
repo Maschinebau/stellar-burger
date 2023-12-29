@@ -1,26 +1,33 @@
 import styles from "./order.module.css"
 import { CurrencyIcon, FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components"
-import PropTypes from "prop-types"
 import { memo, useCallback, useMemo } from "react"
 import { useSelector } from "react-redux"
 import { Link, useLocation } from "react-router-dom"
+import { TOrder } from "../../utils/types"
+import { RootState } from "../../store/rootReducer"
 
-export const Order = memo(({ order, status, link }) => {
-  const ingredients = useSelector((state) => state.ingredients.ingredients)
+type TOrderComponent = {
+  order: TOrder
+  statusInfo: boolean
+  link: string
+}
+
+export const Order = memo(({ order, statusInfo, link }: TOrderComponent) => {
+  const baseIngredients = useSelector((state: RootState) => state.ingredients.ingredients)
   const location = useLocation()
 
   const getIngredientImage = useMemo(() => {
-    return (ingredientId) => {
-      const ingredient = ingredients.find((item) => item._id === ingredientId)
+    return (ingredientId: string) => {
+      const ingredient = baseIngredients.find((item) => item._id === ingredientId)
       return ingredient ? ingredient.image_mobile : ""
     }
-  }, [ingredients])
+  }, [baseIngredients])
 
   const getPrice = useCallback(() => {
-    const matchingIngredients = ingredients.filter((ingredient) => order.ingredients.includes(ingredient._id))
-    const total = matchingIngredients.reduce((accumulator, ingredient) => accumulator + ingredient.price, 0)
+    const matchingIngredients = baseIngredients.filter((ingredient) => order.ingredients.includes(ingredient._id))
+    const total = matchingIngredients.reduce((acc, ingredient) => acc + ingredient.price, 0)
     return total
-  }, [ingredients, order.ingredients])
+  }, [baseIngredients, order.ingredients])
 
   const totalPrice = getPrice()
 
@@ -36,11 +43,9 @@ export const Order = memo(({ order, status, link }) => {
         </div>
         <div>
           <p className="text_type_main-medium">{order.name}</p>
-          {status &&
+          {statusInfo &&
             (order.status === "done" ? (
-              <p className={`${styles.textGreen} text text_type_main-default style`}>
-                выполнен
-              </p>
+              <p className={`${styles.textGreen} text text_type_main-default style`}>выполнен</p>
             ) : (
               <p className="text text_type_main-default">готовится</p>
             ))}
@@ -55,7 +60,7 @@ export const Order = memo(({ order, status, link }) => {
           </ul>
           <div className={styles.summary}>
             <p className="text text_type_digits-default">{totalPrice}</p>
-            <CurrencyIcon />
+            <CurrencyIcon type="primary" />
           </div>
         </div>
       </Link>
@@ -63,13 +68,4 @@ export const Order = memo(({ order, status, link }) => {
   )
 })
 
-Order.propTypes = {
-  order: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    number: PropTypes.number.isRequired
-  }).isRequired,
-  status: PropTypes.bool,
-  link: PropTypes.string
-}
+export default memo(Order)

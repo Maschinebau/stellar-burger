@@ -19,7 +19,7 @@ ul {
   min-width: 1300px;
 }
 
-.constructor {
+.constructormain {
   display: flex;
   justify-content: center;
   column-gap: 40px;

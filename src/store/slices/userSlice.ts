@@ -3,6 +3,11 @@ import { setCookie, handleApiResponse, axiosApi } from "../../utils/api"
 import { TOrder, TUser } from "../../utils/types"
 import { Dispatch } from "redux"
 
+type TUserResponse = {
+  success: boolean
+  user: TUser
+}
+
 export const createUser = createAsyncThunk("user/createUser", async ({ name, email, password }: TUser) => {
   const res = await axiosApi.post("auth/register", {
     email: email,
@@ -30,7 +35,7 @@ export const loginRequest = createAsyncThunk("auth/authorization", async ({ emai
 
 export const getUser = createAsyncThunk("auth/getUser", async () => {
   const res = await axiosApi.get("/auth/user")
-  const data = handleApiResponse(res)
+  const data: TUserResponse = handleApiResponse(res)
   return data
 })
 
@@ -40,7 +45,7 @@ export const changeUser = createAsyncThunk("auth/changeUser", async ({ name, ema
     email: email,
     password: password
   })
-  const data = handleApiResponse(res)
+  const data: TUserResponse = handleApiResponse(res)
   return data
 })
 
@@ -63,9 +68,14 @@ export const checkAuth = () => async (dispatch: Dispatch) => {
   }
 }
 
-export const fetchUserOrders = createAsyncThunk("orders/fetchUserOrders", async () => {
+type Torders = {
+  success: boolean
+  orders: TOrder[]
+}
+
+export const fetchUserOrders = createAsyncThunk("orders/fetchUserOrders", async ()=> {
   const response = await axiosApi.get("/orders/all")
-  const data = handleApiResponse(response)
+  const data: Torders = handleApiResponse(response)
   return data
 })
 
@@ -101,8 +111,8 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(createUser.fulfilled, (state, action) => {
       state.isAuth = true
-      state.email = action.payload.user.email
-      state.name = action.payload.user.name
+      state.email = action.payload.user.email || null
+      state.name = action.payload.user.name || null
     })
     builder.addCase(createUser.rejected, (state, action) => {
       state.isAuth = false
@@ -110,8 +120,8 @@ const userSlice = createSlice({
     })
     builder.addCase(loginRequest.fulfilled, (state, action) => {
       state.isAuth = true
-      state.email = action.payload.user.email
-      state.name = action.payload.user.name
+      state.email = action.payload.user.email || null
+      state.name = action.payload.user.name || null
     })
     builder.addCase(loginRequest.rejected, (state, action) => {
       state.isAuth = false
@@ -120,8 +130,8 @@ const userSlice = createSlice({
     })
     builder.addCase(getUser.fulfilled, (state, action) => {
       state.isAuth = true
-      state.email = action.payload.user.email
-      state.name = action.payload.user.name
+      state.email = action.payload.user.email || null
+      state.name = action.payload.user.name || null
     })
     builder.addCase(getUser.rejected, (state, action) => {
       state.isAuth = false

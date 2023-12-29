@@ -1,12 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { TIngredient } from "../../utils/types"
+
+type TCurrentIngredientState = {
+  currentIngredient: TIngredient | null
+}
 
 const currentIngredientSlice = createSlice({
   name: "currentIngredient",
   initialState: {
     currentIngredient: null
-  },
+  } as TCurrentIngredientState,
   reducers: {
-    setCurrentIngredient(state, action) {
+    setCurrentIngredient(state, action: PayloadAction<TIngredient>) {
       state.currentIngredient = action.payload
     }
   }

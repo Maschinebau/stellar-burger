@@ -1,21 +1,14 @@
 import styles from "./authorization.module.css"
 import { EmailInput, Button } from "@ya.praktikum/react-developer-burger-ui-components"
-import { Link, useNavigate, useLocation } from "react-router-dom"
-import { useState, useRef, useCallback } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { FormEvent, useState } from "react"
 import { sendResetMessage } from "../../utils/api"
 
 export const PasswordForgot = () => {
   const [email, setEmail] = useState("")
   const navigate = useNavigate()
-  const location = useLocation()
 
-  // const onSubmit = useCallback(() => {
-  //   if (sendResetMessage(email)) {
-  //     navigate("/login/reset-password")
-  //   }
-  // }, [email, navigate])
-
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if (await sendResetMessage(email)) {
       navigate("/login/reset-password")
@@ -27,8 +20,6 @@ export const PasswordForgot = () => {
       <form className={styles.form} onSubmit={onSubmit}>
         <h2 className="text text_type_main-large">Восстановление пароля</h2>
         <EmailInput
-          type="email"
-          icon="undefined"
           placeholder="Укажите e-mail"
           value={email}
           onChange={(e) => setEmail(e.target.value)}

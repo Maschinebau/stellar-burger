@@ -1,14 +1,22 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 import { data } from "../../utils/data"
-import { checkResponse } from "../../utils/api"
+import { axiosApi, handleApiResponse } from "../../utils/api"
 import { v4 as uuid } from "uuid"
 import { TIngredient } from "../../utils/types"
 
-export const fetchIngredients = createAsyncThunk("ingredients/fetchIngredients", async (url: string) => {
-  const response = await fetch(url)
-  const result = await checkResponse(response)
-  return result.data
-})
+export const fetchIngredients = createAsyncThunk<TIngredient[], string>(
+  "ingredients/fetchIngredients",
+  async (url) => {
+    const res = await axiosApi.get(url)
+    const result: TIngredientsResponse = handleApiResponse(res)
+    return result.data
+  }
+)
+
+type TIngredientsResponse = {
+  success: boolean
+  data: TIngredient[]
+}
 
 type TIngredientsState = {
   ingredients: TIngredient[]

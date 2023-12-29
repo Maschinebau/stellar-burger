@@ -3,7 +3,7 @@ import { BurgerIcon, ListIcon, Logo, ProfileIcon } from "@ya.praktikum/react-dev
 import { NavItem } from "./nav-item/nav-item"
 import { useAuth } from '../hooks/useAuth'
 
-export function AppHeader() {
+export const AppHeader = () => {
   const { isAuth, email, name } = useAuth()
 
   return (

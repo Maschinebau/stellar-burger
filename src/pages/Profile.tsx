@@ -1,13 +1,11 @@
 import styles from "./pages.module.css"
 import { NavLink, useLocation, useMatch } from "react-router-dom"
 import { Outlet } from "react-router-dom"
-import { useAuth } from "../components/hooks/useAuth"
 import { logout } from "../store/slices/userSlice"
 import { useDispatch } from "react-redux"
 
 
 export const Profile = () => {
-  const { isAuth, email, name } = useAuth()
   const dispatch = useDispatch()
   const location = useLocation()
 

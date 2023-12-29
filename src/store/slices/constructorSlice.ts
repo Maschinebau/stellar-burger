@@ -3,8 +3,8 @@ import { v4 as uuid } from "uuid"
 import { TIngredient } from "../../utils/types"
 
 type TconstructorState = {
-  buns: TIngredient[]
-  mains: TIngredient[]
+  buns: TIngredient[] | []
+  mains: TIngredient[] | []
 }
 
 const constructorSlice = createSlice({
@@ -24,14 +24,14 @@ const constructorSlice = createSlice({
           : console.warn("Индекс перетаскиваемого ингредиента undefined")
       }
     },
-    removeFromConstructor: (state, action: PayloadAction<Pick<TIngredient, "dragId">>) => {
-      state.buns = state.buns.filter((ingredient) => ingredient.dragId !== action.payload)
-      state.mains = state.mains.filter((ingredient) => ingredient.dragId !== action.payload)
+    removeFromConstructor: (state, action: PayloadAction<TIngredient['dragId']>) => {
+      state.buns = state.buns.filter((ingredient) => ingredient?.dragId !== action.payload)
+      state.mains = state.mains.filter((ingredient) => ingredient?.dragId !== action.payload)
     },
-    updateMains: (state, action: PayloadAction<TIngredient[] | []>) => {
+    updateMains: (state, action: PayloadAction<TIngredient[]>) => {
       state.mains = action.payload
     },
-    updateBuns: (state, action: PayloadAction<TIngredient[] | []>) => {
+    updateBuns: (state, action: PayloadAction<TIngredient[]>) => {
       state.buns = action.payload
     }
   }

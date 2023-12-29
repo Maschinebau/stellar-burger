@@ -1,7 +1,7 @@
 import styles from "./authorization.module.css"
 import { Input, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components"
 import { Link, useNavigate } from "react-router-dom"
-import { useState, useCallback } from "react"
+import { useState, FormEvent } from "react"
 import { changePassword } from "../../utils/api"
 
 export const PasswordReset = () => {
@@ -10,9 +10,8 @@ export const PasswordReset = () => {
   const navigate = useNavigate()
   console.log(token)
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
-
     if (await changePassword(password, token)) {
       navigate("/login/")
     }
@@ -29,7 +28,6 @@ export const PasswordReset = () => {
         ></PasswordInput>
         <Input
           type="text"
-          icon="undefined"
           placeholder="Введите код из письма"
           value={token}
           onChange={(e) => setToken(e.target.value)}
