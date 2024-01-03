@@ -2,15 +2,14 @@ import { FC, useState, useEffect, memo, useCallback, useRef } from "react"
 import styles from "./burger-Ingredients.module.css"
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components"
 import { IngredientGroup } from "./ingredient-group/ingredient-group"
-import { useSelector } from "react-redux"
 import { TIngredient } from "../../utils/types"
-import { RootState } from "../../store/rootReducer"
+import { useAppSelector } from "../hooks/useAppSelector"
 
 type TabType = "bun" | "sauce" | "main"
 
 export const BurgerIngredients = () => {
   const [currentTab, setCurrentTab] = useState<TabType>("bun")
-  const ingredients = useSelector((state: RootState) => state.ingredients.ingredients)
+  const ingredients = useAppSelector((state) => state.ingredients.ingredients)
   const buns = ingredients.filter((item) => item.type === "bun") as TIngredient[]
   const sauces = ingredients.filter((item) => item.type === "sauce") as TIngredient[]
   const mains = ingredients.filter((item) => item.type === "main") as TIngredient[]

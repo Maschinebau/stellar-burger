@@ -1,26 +1,21 @@
 import styles from "./popups.module.css"
-import { ingredientPropType } from "../../utils/prop-types"
-import PropTypes from "prop-types"
 import { useParams } from "react-router-dom"
-import { useSelector, useDispatch } from "react-redux"
 import { fetchIngredients } from "../../store/slices/ingredientsSlice"
 import { BASE_URL } from "../../utils/constants"
 import { useEffect } from "react"
 import { useLocation } from "react-router-dom"
 import { Spinner } from "../spinner/spinner"
-import { RootState } from "../../store/rootReducer"
+import { useAppDispatch } from "../hooks/useAppDispatch"
+import { useAppSelector } from "../hooks/useAppSelector"
 
 export function IngredientDetails() {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const { id } = useParams()
-  const ingredients = useSelector((state: RootState) => state.ingredients.ingredients)
+  const ingredients = useAppSelector((state) => state.ingredients.ingredients)
   const ingredient = ingredients.find((item) => item._id === id)
   const location = useLocation()
   const background = location.state && location.state.background
 
-  useEffect(() => {
-    dispatch(fetchIngredients(`${BASE_URL}/ingredients`))
-  }, [dispatch])
 
   return (
     <section className={`${styles.wrapper} ${!background && styles.wrapperPage}`}>
@@ -61,7 +56,3 @@ export function IngredientDetails() {
     </section>
   )
 }
-
-// IngredientDetails.propTypes = {
-//   ingredient: ingredientPropType.isRequired
-// }

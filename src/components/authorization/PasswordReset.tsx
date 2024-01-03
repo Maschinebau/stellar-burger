@@ -1,18 +1,17 @@
 import styles from "./authorization.module.css"
 import { Input, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components"
 import { Link, useNavigate } from "react-router-dom"
-import { useState, FormEvent } from "react"
+import { useState, FormEvent, ChangeEvent } from "react"
 import { changePassword } from "../../utils/api"
+import { useForm } from "../hooks/useForm"
 
 export const PasswordReset = () => {
-  const [password, setPassword] = useState("")
-  const [token, setToken] = useState("")
+  const { values, handleChange } = useForm({ password: "", token: "" })
   const navigate = useNavigate()
-  console.log(token)
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    if (await changePassword(password, token)) {
+    if (await changePassword(values.password, values.token)) {
       navigate("/login/")
     }
   }
@@ -23,14 +22,16 @@ export const PasswordReset = () => {
         <h2 className="text text_type_main-large">Восстановление пароля</h2>
         <PasswordInput
           placeholder="Введите новый пароль"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={values.password}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
+          name='password'
         ></PasswordInput>
         <Input
           type="text"
           placeholder="Введите код из письма"
-          value={token}
-          onChange={(e) => setToken(e.target.value)}
+          value={values.token}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
+          name='token'
         ></Input>
         <Button htmlType="submit" extraClass={`${styles.button} text text_type_main-default`}>
           Восстановить

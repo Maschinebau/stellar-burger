@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { setCookie, handleApiResponse, axiosApi } from "../../utils/api"
 import { TOrder, TUser } from "../../utils/types"
 import { Dispatch } from "redux"
+import { AppThunkDispatch, useAppDispatch } from "../../components/hooks/useAppDispatch"
 
 type TUserResponse = {
   success: boolean
@@ -53,16 +54,17 @@ export const logout = createAsyncThunk("auth/logout", async () => {
   const refreshToken = localStorage.getItem("refreshToken")
   const res = await axiosApi.post("/auth/logout", { token: refreshToken })
   const data = handleApiResponse(res)
-  return data
+  return
 })
 
-export const checkAuth = () => async (dispatch: Dispatch) => {
+export const checkAuth = () => async (useAppDispatch: AppThunkDispatch) => {
   const refreshToken = localStorage.getItem("refreshToken")
   if (!refreshToken) {
     return console.log("Check-auth: User unauthorized")
   }
   try {
-    await dispatch(getUser())
+    //@ts-ignore
+    await useAppDispatch(getUser())
   } catch (error) {
     console.log("Check-auth: User unauthorized")
   }

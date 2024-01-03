@@ -11,7 +11,6 @@ import {
 } from "../../pages"
 import { RequireAuth } from "../hoc/RequireAuth"
 import { useCallback, useEffect } from "react"
-import { useDispatch } from "react-redux"
 import { checkAuth } from "../../store/slices/userSlice"
 import { IngredientDetails } from "../popups/IngredientDetails"
 import { Modal } from "../modal/Modal"
@@ -20,9 +19,10 @@ import { BASE_URL } from "../../utils/constants"
 import { OrderInfo } from "../orderInfo/OrderInfo"
 import { OrdersHistory } from "../orders-history/ordersHistory"
 import { Account } from "../Account/Account"
+import { useAppDispatch } from "../hooks/useAppDispatch"
 
 function App() {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const location = useLocation()
   const navigate = useNavigate()
   const background = location.state && location.state.background

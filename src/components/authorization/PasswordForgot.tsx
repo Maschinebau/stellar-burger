@@ -1,16 +1,17 @@
 import styles from "./authorization.module.css"
 import { EmailInput, Button } from "@ya.praktikum/react-developer-burger-ui-components"
 import { Link, useNavigate } from "react-router-dom"
-import { FormEvent, useState } from "react"
+import { ChangeEvent, FormEvent, useState } from "react"
 import { sendResetMessage } from "../../utils/api"
+import { useForm } from "../hooks/useForm"
 
 export const PasswordForgot = () => {
-  const [email, setEmail] = useState("")
+  const { values, handleChange } = useForm({ email: "" })
   const navigate = useNavigate()
 
-  const onSubmit = async (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (await sendResetMessage(email)) {
+    if (await sendResetMessage(values.email)) {
       navigate("/login/reset-password")
     }
   }
@@ -21,14 +22,14 @@ export const PasswordForgot = () => {
         <h2 className="text text_type_main-large">Восстановление пароля</h2>
         <EmailInput
           placeholder="Укажите e-mail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={values.email}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
+          name='email'
         ></EmailInput>
         <Button
           htmlType="submit"
           type="primary"
           extraClass={`${styles.button} text text_type_main-default`}
-          onClick={onSubmit}
         >
           Восстановить
         </Button>

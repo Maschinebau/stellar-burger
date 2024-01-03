@@ -1,19 +1,19 @@
 import styles from "./authorization.module.css"
 import { PasswordInput, EmailInput, Button } from "@ya.praktikum/react-developer-burger-ui-components"
 import { Link, useNavigate } from "react-router-dom"
-import { useState, MouseEvent } from "react"
-import { useDispatch } from "react-redux"
+import { ChangeEvent, FormEvent } from "react"
 import { loginRequest } from "../../store/slices/userSlice"
+import { useAppDispatch } from "../hooks/useAppDispatch"
+import { useForm } from "../hooks/useForm"
 
 export const SignIn = () => {
-  const [email, setLogin] = useState("")
-  const [password, setPassword] = useState("")
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const { values, handleChange } = useForm({ email: "", password: "" })
 
-  const handleLogin = async (e: MouseEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    await dispatch(loginRequest({ email, password }))
+    await dispatch(loginRequest(values))
   }
 
   return (
@@ -22,13 +22,15 @@ export const SignIn = () => {
         <h2 className="text text_type_main-large">Вход</h2>
         <EmailInput
           placeholder="E-mail"
-          value={email}
-          onChange={(e) => setLogin(e.target.value)}
+          value={values.email}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
+          name="email"
         ></EmailInput>
         <PasswordInput
           placeholder="Пароль"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={values.password}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
+          name="password"
         ></PasswordInput>
         <Button
           htmlType="submit"

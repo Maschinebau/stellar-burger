@@ -1,27 +1,26 @@
 import styles from "../orderInfo/orderInfo.module.css"
 import { CurrencyIcon, FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components"
 import { useEffect, memo } from "react"
-import { useSelector, useDispatch } from "react-redux"
 import { useLocation, useParams } from "react-router-dom"
 import { getOrders } from "../../store/slices/allOrdersSlise"
 import { Spinner } from "../spinner/spinner"
 import { fetchIngredients } from "../../store/slices/ingredientsSlice"
 import { BASE_URL } from "../../utils/constants"
-import { RootState } from "../../store/rootReducer"
 import { TIngredient, TOrder } from "../../utils/types"
+import { useAppDispatch } from "../hooks/useAppDispatch"
+import { useAppSelector } from "../hooks/useAppSelector"
 
 export const OrderInfo = memo(() => {
   const { id } = useParams()
   const location = useLocation()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const background = location.state && location.state.background
-  const orders = useSelector((state: RootState) => state.allOrders.orders)
+  const orders = useAppSelector((state) => state.allOrders.orders)
   const currentOrder = orders.find((order: TOrder) => order._id === id)
-  const ingredients = useSelector((state: RootState) => state.ingredients.ingredients)
+  const ingredients = useAppSelector((state) => state.ingredients.ingredients)
 
   useEffect(() => {
     dispatch(getOrders())
-    dispatch(fetchIngredients(`${BASE_URL}/ingredients`))
   }, [dispatch])
 
   if (!currentOrder || !ingredients) {

@@ -2,11 +2,11 @@ import styles from "./pages.module.css"
 import { NavLink, useLocation, useMatch } from "react-router-dom"
 import { Outlet } from "react-router-dom"
 import { logout } from "../store/slices/userSlice"
-import { useDispatch } from "react-redux"
+import { useAppDispatch } from "../components/hooks/useAppDispatch"
 
 
 export const Profile = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const location = useLocation()
 
   const onExit = () => {

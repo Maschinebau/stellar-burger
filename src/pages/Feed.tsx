@@ -1,16 +1,16 @@
 import { getOrders } from "../store/slices/allOrdersSlise"
 import { useEffect } from "react"
 import styles from "./pages.module.css"
-import { useDispatch, useSelector } from "react-redux"
 import { Spinner } from "../components/spinner/spinner"
 import { Order } from "../components/order/Order"
-import { RootState } from "../store/rootReducer"
+import { useAppDispatch } from "../components/hooks/useAppDispatch"
+import { useAppSelector } from "../components/hooks/useAppSelector"
 
 export const Feed = () => {
-  const dispatch = useDispatch()
-  const orders = useSelector((state: RootState) => state.allOrders.orders)
-  const ordersTotal = useSelector((state: RootState) => state.allOrders.total)
-  const ordersToday = useSelector((state: RootState) => state.allOrders.totalToday)
+  const dispatch = useAppDispatch()
+  const orders = useAppSelector((state) => state.allOrders.orders)
+  const ordersTotal = useAppSelector((state) => state.allOrders.total)
+  const ordersToday = useAppSelector((state) => state.allOrders.totalToday)
 
   useEffect(() => {
     dispatch(getOrders())

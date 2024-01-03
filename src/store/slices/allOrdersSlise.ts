@@ -3,7 +3,7 @@ import { axiosApi, handleApiResponse } from "../../utils/api"
 import { TOrder } from "../../utils/types"
 import { AxiosResponse } from "axios"
 
-export const getOrders = createAsyncThunk<TAllOrdersState, void>("allOrders/getOrders", async () => {
+export const getOrders = createAsyncThunk("allOrders/getOrders", async () => {
   const response: AxiosResponse<TAllOrdersState> = await axiosApi.get("/orders/all")
   const data: TAllOrdersState = await handleApiResponse(response)
   return data

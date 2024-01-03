@@ -1,12 +1,12 @@
 import { useState, useMemo, memo, useCallback } from "react"
 import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components"
 import styles from "./ingredient-item.module.css"
-import { useSelector, useDispatch } from "react-redux"
 import { setCurrentIngredient } from "../../../store/slices/currentIngredientSlice"
 import { useLocation, Link } from "react-router-dom"
 import { TIngredient } from "../../../utils/types"
-import { RootState } from "../../../store/rootReducer"
-import type {} from "redux-thunk/extend-redux"
+
+import { useAppDispatch } from "../../hooks/useAppDispatch"
+import { useAppSelector } from "../../hooks/useAppSelector"
 
 type TIngredientItemProps = {
   ingredient: TIngredient
@@ -14,9 +14,9 @@ type TIngredientItemProps = {
 
 export function IngredientItem({ ingredient }: TIngredientItemProps) {
   const [isClicked, setIsClicked] = useState<boolean>(false)
-  const orderedMains = useSelector((state: RootState) => state.burgerConstructor.mains)
-  const orderedBuns = useSelector((state: RootState) => state.burgerConstructor.buns)
-  const dispatch = useDispatch()
+  const orderedMains = useAppSelector((state) => state.burgerConstructor.mains)
+  const orderedBuns = useAppSelector((state) => state.burgerConstructor.buns)
+  const dispatch = useAppDispatch()
   const location = useLocation()
 
   const onClick = useCallback(() => {

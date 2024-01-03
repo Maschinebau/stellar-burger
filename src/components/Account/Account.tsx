@@ -1,32 +1,27 @@
-import { FormEvent, useState } from "react"
+import { ChangeEvent, FormEvent, useState } from "react"
 import {} from "react-router-dom"
 import { Input, PasswordInput, EmailInput, Button } from "@ya.praktikum/react-developer-burger-ui-components"
 import styles from "./profile.module.css"
 import { useAuth } from "../hooks/useAuth"
-import { useDispatch } from "react-redux"
 import { changeUser } from "../../store/slices/userSlice"
+import { useAppDispatch } from "../hooks/useAppDispatch"
+import { useForm } from "../hooks/useForm"
 
 export const Account = () => {
   const { isAuth, email, name } = useAuth()
-  const [username, setUsername] = useState(name || '')
-  const [login, setLogin] = useState(email || '')
-  const [password, setPassword] = useState('')
+  const { values, handleChange, setValues } = useForm({ name: name || "", email: email || "", password: "" })
   const [isFormChanged, setIsFormChanged] = useState(false)
+  const dispatch = useAppDispatch()
 
-  const dispatch = useDispatch()
-
-  const onSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
-    if (username !== null && login !== null) {
-      await dispatch(changeUser({ name: username, email: login, password }));
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (values.name !== null && values.email !== null) {
+      await dispatch(changeUser(values))
     }
   }
 
   const onReset = () => {
-    setUsername(name || '')
-    setLogin(email || '')
-    setPassword(password)
+    setValues({ name: name || "", email: email || "", password: "" })
     setIsFormChanged(false)
   }
 
@@ -41,29 +36,31 @@ export const Account = () => {
           type="text"
           icon="EditIcon"
           placeholder="Имя"
-          value={username}
-          onChange={(e) => {
+          value={values.name}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
             handleInputChange()
-            setUsername(e.target.value)
+            handleChange(e)
           }}
+          name='name'
         ></Input>
         <EmailInput
-
           placeholder="Логин"
-          value={login}
-          onChange={(e) => {
+          value={values.email}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
             handleInputChange()
-            setLogin(e.target.value)
+            handleChange(e)
           }}
+          name='email'
         ></EmailInput>
         <PasswordInput
           icon="EditIcon"
           placeholder="Пароль"
-          value={password}
-          onChange={(e) => {
+          value={values.password}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
             handleInputChange()
-            setPassword(e.target.value)
+            handleChange(e)
           }}
+          name='password'
         ></PasswordInput>
         <div className={styles.buttons}>
           <button

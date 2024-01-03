@@ -2,11 +2,11 @@ import styles from "./pages.module.css"
 import { BurgerConstructor } from "../components/burger-constructor/burger-constructor"
 import { BurgerIngredients } from "../components/burger-Ingredients/burger-Ingredients"
 import { useCallback } from "react"
-import { useSelector, useDispatch } from "react-redux"
 import { DragDropContext, DropResult } from "react-beautiful-dnd"
 import { addToConstructor, removeFromConstructor, updateMains } from "../store/slices/constructorSlice"
-import { RootState } from "../store/rootReducer"
 import { TIngredient } from "../utils/types"
+import { useAppDispatch } from "../components/hooks/useAppDispatch"
+import { useAppSelector } from "../components/hooks/useAppSelector"
 
 type TReorder = {
   list: TIngredient[]
@@ -15,9 +15,9 @@ type TReorder = {
 }
 
 export const Constructor = () => {
-  const ingredients = useSelector((state: RootState) => state.ingredients.ingredients)
-  const orderedIngredients = useSelector((state: RootState) => state.burgerConstructor.mains)
-  const dispatch = useDispatch()
+  const ingredients = useAppSelector((state) => state.ingredients.ingredients)
+  const orderedIngredients = useAppSelector((state) => state.burgerConstructor.mains)
+  const dispatch = useAppDispatch()
 
   // рассчеты при окончании перетаскивания ингредиента
   const handleDragEnd = useCallback(

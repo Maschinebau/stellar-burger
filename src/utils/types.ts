@@ -1,3 +1,4 @@
+
 export type TUser = {
   readonly name?: string
   readonly email?: string
@@ -6,8 +7,8 @@ export type TUser = {
 
 export type TIngredient = {
   index?: number
-  dragId?: string 
-  readonly _id: string 
+  dragId?: string
+  readonly _id: string
   readonly name: string
   readonly type: string
   readonly proteins: number

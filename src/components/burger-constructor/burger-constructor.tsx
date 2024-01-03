@@ -4,25 +4,25 @@ import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-co
 import { BurgerComponent } from "./burger-component/burger-component"
 import { Modal } from "../modal/Modal"
 import { OrderDetails } from "../popups/OrderDetails"
-import { useSelector, useDispatch } from "react-redux"
 import { Droppable, Draggable } from "react-beautiful-dnd"
 import { removeFromConstructor, updateMains, updateBuns } from "../../store/slices/constructorSlice"
 import { postOrder } from "../../store/slices/orderSlice"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
 import { Spinner } from "../spinner/spinner"
-import { RootState } from "../../store/rootReducer"
 import { TIngredient } from "../../utils/types"
+import { useAppDispatch } from "../hooks/useAppDispatch"
+import { useAppSelector } from "../hooks/useAppSelector"
 
 export function BurgerConstructor() {
   const [modalOpened, setModalOpen] = useState(false)
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const { isAuth } = useAuth()
 
-  const orderNumber = useSelector((state: RootState) => state.order.orderNumber)
-  const orderedMains = useSelector((state: RootState) => state.burgerConstructor.mains)
-  const orderedBuns = useSelector((state: RootState) => state.burgerConstructor.buns)
+  const orderNumber = useAppSelector((state) => state.order.orderNumber)
+  const orderedMains = useAppSelector((state) => state.burgerConstructor.mains)
+  const orderedBuns = useAppSelector((state) => state.burgerConstructor.buns)
 
   const orderedBun = orderedBuns.find((item) => item.type === "bun")
 

@@ -1,7 +1,6 @@
 import React, { forwardRef, Ref } from "react";
 import { Droppable, Draggable, DraggableProvided, DraggableStateSnapshot } from "react-beautiful-dnd";
 import { TIngredient } from "../../../utils/types";
-import { ingredientPropType } from "../../../utils/prop-types";
 import { IngredientItem } from "../ingredient-item/ingredient-item";
 import styles from "./ingredient-group.module.css";
 

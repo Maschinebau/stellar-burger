@@ -1,10 +1,9 @@
 import styles from "./order.module.css"
 import { CurrencyIcon, FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components"
 import { memo, useCallback, useMemo } from "react"
-import { useSelector } from "react-redux"
 import { Link, useLocation } from "react-router-dom"
 import { TOrder } from "../../utils/types"
-import { RootState } from "../../store/rootReducer"
+import { useAppSelector } from "../hooks/useAppSelector"
 
 type TOrderComponent = {
   order: TOrder
@@ -13,7 +12,7 @@ type TOrderComponent = {
 }
 
 export const Order = memo(({ order, statusInfo, link }: TOrderComponent) => {
-  const baseIngredients = useSelector((state: RootState) => state.ingredients.ingredients)
+  const baseIngredients = useAppSelector((state) => state.ingredients.ingredients)
   const location = useLocation()
 
   const getIngredientImage = useMemo(() => {

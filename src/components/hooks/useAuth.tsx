@@ -1,10 +1,9 @@
-import { useSelector } from "react-redux"
-import { RootState } from "../../store/rootReducer"
+import { useAppSelector } from "./useAppSelector"
 
 export const useAuth = () => {
-  const isAuth = useSelector((state: RootState) => state.user.isAuth)
-  const email = useSelector((state: RootState) => state.user.email)
-  const name = useSelector((state: RootState) => state.user.name)
+  const isAuth = useAppSelector((state) => state.user.isAuth)
+  const email = useAppSelector((state) => state.user.email)
+  const name = useAppSelector((state) => state.user.name)
 
   return { isAuth, email, name }
 }
