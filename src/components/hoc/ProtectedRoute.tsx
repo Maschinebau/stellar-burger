@@ -2,17 +2,6 @@ import { useLocation, Navigate, RouteProps } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
 import { ReactNode } from "react"
 
-type TrequireAuth = {
-  children: ReactNode
-}
-
-export const RequireAuth = ({ children }: TrequireAuth) => {
-  const location = useLocation()
-  const { isAuth } = useAuth()
-
-  return isAuth ? <>{children}</> : <Navigate to="/login" state={{ from: location }} />
-}
-
 type ProtectedRouteProps = {
   children: ReactNode
   anonymous?: boolean

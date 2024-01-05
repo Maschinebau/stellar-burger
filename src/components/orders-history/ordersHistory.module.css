@@ -6,4 +6,6 @@
   max-height: calc(100vh - 250px);
   overflow-y: scroll;
   padding-right: 15px;
+  max-width: 750px;
+  width: 100%;
 }

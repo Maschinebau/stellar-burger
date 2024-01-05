@@ -9,6 +9,7 @@ import { useForm } from "../hooks/useForm"
 
 export const Account = () => {
   const { isAuth, email, name } = useAuth()
+  const [fieldDisabled, setDisabled] = useState(true)
   const { values, handleChange, setValues } = useForm({ name: name || "", email: email || "", password: "" })
   const [isFormChanged, setIsFormChanged] = useState(false)
   const dispatch = useAppDispatch()
@@ -44,6 +45,7 @@ export const Account = () => {
           name='name'
         ></Input>
         <EmailInput
+          isIcon={true}
           placeholder="Логин"
           value={values.email}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {

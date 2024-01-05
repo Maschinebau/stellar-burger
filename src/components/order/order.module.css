@@ -1,5 +1,6 @@
 .order {
   max-width: 750px;
+  min-width: 605px;
 }
 
 .link {
@@ -42,6 +43,31 @@
   color: inherit;
 }
 
+.ingredient {
+  border-radius: 50%;
+  display: flex;
+  height: 64px;
+  width: 64px;
+  animation: gradientBorder 5s linear infinite;
+  align-items: center;
+  justify-content: center;
+  margin-right: -20px;
+  overflow: hidden;
+  padding: 2px;
+  position: relative;
+}
+
+.img {
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background: #131316f3;
+}
+
+.textGreen {
+  color: green;
+}
+
 @keyframes gradientBorder {
   0% {
     border: 2px solid #7e0eb6;
@@ -63,25 +89,4 @@
     border: 2px solid #7e0eb6;
     box-shadow: 0 0 10px #7e0eb6;
   }
-}
-
-.ingredient {
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  height: 64px;
-  width: 64px;
-  animation: gradientBorder 5s linear infinite;
-}
-
-.img {
-  border-radius: 50%;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-.textGreen {
-  color: green;
 }

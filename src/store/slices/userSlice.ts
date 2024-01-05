@@ -75,7 +75,7 @@ type Torders = {
   orders: TOrder[]
 }
 
-export const fetchUserOrders = createAsyncThunk("orders/fetchUserOrders", async ()=> {
+export const fetchUserOrders = createAsyncThunk("orders/fetchUserOrders", async () => {
   const response = await axiosApi.get("/orders/all")
   const data: Torders = handleApiResponse(response)
   return data
@@ -97,7 +97,7 @@ const userSlice = createSlice({
     userOrders: []
   } as TUserState,
   reducers: {
-    setUser(state, action: PayloadAction<Omit<TUserState, 'userOrders'>>) {
+    setUser(state, action: PayloadAction<Omit<TUserState, "userOrders">>) {
       state.isAuth = true
       state.email = action.payload.email
       state.name = action.payload.name
@@ -108,6 +108,11 @@ const userSlice = createSlice({
       state.name = null
       localStorage.removeItem("refreshToken")
       document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+    },
+    updateUserOrders(state, action: PayloadAction<{ orders: TOrder[] }>) {
+      if (Array.isArray(action.payload?.orders)) {
+        state.userOrders = action.payload.orders.reverse()
+      }
     }
   },
   extraReducers: (builder) => {
@@ -157,5 +162,5 @@ const userSlice = createSlice({
   }
 })
 
-export const { setUser, resetUser } = userSlice.actions
+export const { setUser, resetUser, updateUserOrders } = userSlice.actions
 export default userSlice.reducer

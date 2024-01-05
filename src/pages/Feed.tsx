@@ -1,10 +1,12 @@
-import { getOrders } from "../store/slices/allOrdersSlise"
+import { getOrders, updateOrders } from "../store/slices/allOrdersSlise"
 import { useEffect } from "react"
 import styles from "./pages.module.css"
 import { Spinner } from "../components/spinner/spinner"
 import { Order } from "../components/order/Order"
 import { useAppDispatch } from "../components/hooks/useAppDispatch"
 import { useAppSelector } from "../components/hooks/useAppSelector"
+import { WS_URL } from "../utils/constants"
+import { useSocket } from "../components/hooks/useSocket"
 
 export const Feed = () => {
   const dispatch = useAppDispatch()
@@ -12,9 +14,10 @@ export const Feed = () => {
   const ordersTotal = useAppSelector((state) => state.allOrders.total)
   const ordersToday = useAppSelector((state) => state.allOrders.totalToday)
 
-  useEffect(() => {
-    dispatch(getOrders())
-  }, [dispatch])
+  useSocket(`${WS_URL}/orders/all`, (e) => {
+    const data = JSON.parse(e.data)
+    dispatch(updateOrders(data))
+  })
 
   return (
     <section className={styles.feed}>

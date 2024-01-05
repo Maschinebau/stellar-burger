@@ -131,7 +131,6 @@ export function getCookie(name: string) {
   return matches ? decodeURIComponent(matches[1]) : undefined
 }
 
-
 export const getCookies = () => {
   const cookies = document.cookie.split(";")
   const cookieData = {}

@@ -31,6 +31,13 @@ const allOrdersSlice = createSlice({
       state.orders = []
       state.total = null
       state.totalToday = null
+      state.success = false
+    },
+    updateOrders: (state, action: PayloadAction<TAllOrdersState>) => {
+      state.orders = action.payload.orders
+      state.total = action.payload.total
+      state.totalToday = action.payload.totalToday
+      state.success = action.payload.success
     }
   },
   extraReducers: (builder) => {
@@ -47,5 +54,5 @@ const allOrdersSlice = createSlice({
   }
 })
 
-export const { clearOrders } = allOrdersSlice.actions
+export const { clearOrders, updateOrders } = allOrdersSlice.actions
 export default allOrdersSlice.reducer
