@@ -50,7 +50,7 @@ function App() {
           {/* проверим */}
           {authChecked && (
             <Route
-              path="profile/*"
+              path="profile/"
               element={
                 <ProtectedRoute>
                   <Profile />

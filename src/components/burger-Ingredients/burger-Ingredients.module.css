@@ -5,6 +5,7 @@
   transition: all 1s;
   max-height: calc(100vh - 300px);
   row-gap: 40px;
+  position: relative;
 }
 
 .section {

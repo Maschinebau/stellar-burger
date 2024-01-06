@@ -4,6 +4,7 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components"
 import { IngredientGroup } from "./ingredient-group/ingredient-group"
 import { TIngredient } from "../../utils/types"
 import { useAppSelector } from "../hooks/useAppSelector"
+import { Spinner } from "../spinner/spinner"
 
 type TabType = "bun" | "sauce" | "main"
 
@@ -73,9 +74,15 @@ export const BurgerIngredients = () => {
         </Tab>
       </div>
       <div className={`${styles.ingredientsContainer} custom-scroll mt-10`} ref={ingredientsContainerRef}>
-        <IngredientGroup id="bun" title="Булка" listItems={buns} ref={bunsGroupRef} />
-        <IngredientGroup id="sauce" title="Соусы" listItems={sauces} ref={saucesGroupRef} />
-        <IngredientGroup id="main" title="Начинки" listItems={mains} ref={mainsGroupRef} />
+        {buns.length === 0 && sauces.length === 0 && mains.length === 0 ? (
+          <Spinner />
+        ) : (
+          <>
+            <IngredientGroup id="bun" title="Булка" listItems={buns} ref={bunsGroupRef} />
+            <IngredientGroup id="sauce" title="Соусы" listItems={sauces} ref={saucesGroupRef} />
+            <IngredientGroup id="main" title="Начинки" listItems={mains} ref={mainsGroupRef} />
+          </>
+        )}
       </div>
     </section>
   )
