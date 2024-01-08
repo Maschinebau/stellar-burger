@@ -5,7 +5,6 @@ import orderReducer from "./slices/orderSlice"
 import currentIngredientReducer from "./slices/currentIngredientSlice"
 import userReducer from "./slices/userSlice"
 import allOrdersReducer from "./slices/allOrdersSlise"
-import websocketReducer from "./slices/websocketSlice"
 
 const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
@@ -14,7 +13,6 @@ const rootReducer = combineReducers({
   order: orderReducer,
   user: userReducer,
   allOrders: allOrdersReducer,
-  websocket: websocketReducer
 })
 
 export type RootState = ReturnType<typeof rootReducer>

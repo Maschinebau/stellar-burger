@@ -110,9 +110,9 @@ const userSlice = createSlice({
       document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
     },
     updateUserOrders(state, action: PayloadAction<{ orders: TOrder[] }>) {
-      if (Array.isArray(action.payload?.orders)) {
+
         state.userOrders = action.payload.orders.reverse()
-      }
+
     }
   },
   extraReducers: (builder) => {

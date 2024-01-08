@@ -2,21 +2,28 @@ import { useEffect } from "react"
 import { Order } from "../order/Order"
 import { Spinner } from "../spinner/spinner"
 import styles from "./ordersHistory.module.css"
-import { fetchUserOrders, updateUserOrders } from "../../store/slices/userSlice"
 import { useAppDispatch } from "../hooks/useAppDispatch"
 import { useAppSelector } from "../hooks/useAppSelector"
 import { getCookie } from "../../utils/api"
 import { WS_URL } from "../../utils/constants"
-import { useSocket } from "../hooks/useSocket"
+import { webSocketConnect, webSocketDisconnect } from "../../store/middleware/webSocketActions"
 
 export const OrdersHistory = () => {
   const dispatch = useAppDispatch()
   const accessToken = getCookie("accessToken")?.replace("Bearer ", "")
 
-  useSocket(`${WS_URL}/orders?token=${accessToken}`, (event) => {
-    const data = JSON.parse(event.data)
-    dispatch(updateUserOrders({ orders: data.orders }))
-  })
+  useEffect(() => {
+    dispatch(
+      webSocketConnect({
+        url: `${WS_URL}/orders?token=${accessToken}`,
+        actionType: "USER_ORDERS"
+      })
+    )
+
+    return () => {
+      dispatch(webSocketDisconnect())
+    }
+  }, [dispatch, accessToken])
 
   const orders = useAppSelector((state) => state.user.userOrders)
 
