@@ -10,7 +10,7 @@
 [![Rest API](https://img.shields.io/badge/rest_api-%2320232a.svg?style=for-the-badge&logo=rest&logoColor=white)](https://ru.wikipedia.org/wiki/REST)
 [![WebSocket API](https://img.shields.io/badge/WebSocket_API-FF6C37?style=for-the-badge&logo=websocket&logoColor=white)](https://ru.wikipedia.org/wiki/WebSocket)
 
-[![image](https://maschinebau.github.io/react-stellar-burger/)
+![image](https://github.com/Maschinebau/react-stellar-burger/assets/119728265/312e44fd-7100-4c15-9779-c2bd3e9f8673)
 
 В приложении Stellar Burger пользователь может составить свой уникальный космический бургер. 
 Путем перетаскивания ингредиентов в корзину формируется состав бургера. 
