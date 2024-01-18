@@ -18,24 +18,6 @@
 Созданные заказы можно отслеживать в личном кабинете, в котором также можно редактировать профиль.
 Также доступна общая лента заказов, которая обновляется через веб-сокет соединение.
 
-🌐 [https://teplokotov.github.io/react-stellar-burger/](https://maschinebau.github.io/react-stellar-burger/)
+🌐 (https://maschinebau.github.io/react-stellar-burger/)
 
-## Используемые технологии
-- VS Code
-- Яндекс Браузер Dev Tools
-- Git Bash
-- Figma
-- PerfectPixel by WellDoneCode
-- React 
-- REST API
-- WebSocket API
-- [prop-types](https://www.npmjs.com/package/prop-types)
-- [redux](https://www.npmjs.com/package/redux)
-- [react-redux](https://www.npmjs.com/package/react-redux)
-- [redux-thunk](https://www.npmjs.com/package/redux-thunk)
-- [react-dnd](https://www.npmjs.com/package/react-dnd)
-- [react-dnd-html5-backend](https://www.npmjs.com/package/react-dnd-html5-backend)
-- [React Router 6.15](https://www.npmjs.com/package/react-router-dom)
-- [uuid](https://www.npmjs.com/package/uuid)
-- [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi)
-- [React Developer Burger UI Components](https://yandex-practicum.github.io/react-developer-burger-ui-components/docs/)
+
