@@ -20,6 +20,7 @@
 
 .wrapper {
   width: 640px;
+  min-height: 30vh;
   padding: 40px;
   background: #1C1C21;
   display: flex;
