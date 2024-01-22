@@ -22,7 +22,7 @@
 
     npm start
 
-Перейти по [ссылке](https://maschinebau.github.io/react-stellar-burger/) на деплой проекта.
+Перейти по [ссылке](https://maschinebau.github.io/stellar-burger/) на деплой проекта.
 
 ---
 
