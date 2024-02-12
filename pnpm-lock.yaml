@@ -12,7 +12,7 @@ dependencies:
     specifier: ^5.3.3
     version: 5.3.3
   '@ya.praktikum/react-developer-burger-ui-components':
-    specifier: ^1.14.0
+    specifier: '*'
     version: 1.14.0(react-dom@17.0.2)(react@17.0.2)
   axios:
     specifier: ^1.5.1

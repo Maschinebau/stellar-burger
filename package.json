@@ -6,7 +6,7 @@
   "dependencies": {
     "@types/react-router": "^5.1.20",
     "@types/react-router-dom": "^5.3.3",
-    "@ya.praktikum/react-developer-burger-ui-components": "^1.14.0",
+    "@ya.praktikum/react-developer-burger-ui-components": "*",
     "axios": "^1.5.1",
     "clsx": "^1.2.1",
     "history": "^5.3.0",
